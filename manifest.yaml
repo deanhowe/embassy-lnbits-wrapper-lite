@@ -1,17 +1,26 @@
 compat: v0
-id: hello-world
-version: 0.1.0
-title: hello-world
+id: lnbitslegend-lite
+version: 0.0.125
+title: "LNBits LITE LEGEND"
 description:
-  short: "A simple, minimal project to serve as a template for creating an app for the Embassy."
-  long: "Hello World is a simple, minimal project to serve as a template for creating an app for the Embassy."
-release-notes: Initial release.
-
+  short: "LNbits LEGEND LITE v0.1 BETA, free and open-source lightning-network wallet/accounts system"
+  long: "LNbits LEGEND LITE v0.1 BETA, free and open-source lightning-network wallet/accounts system"
+release-notes: | 
+  - Added SQLite WEB
+  - Added options to install python plugins
+  Initial release.
+#license-info:
+#  license: MIT
+#  url: https://github.com/deanhowe/embassy-lnbits-wrapper-lite/blob/master/LICENSE
+#wrapper-repo: https://github.com/deanhowe/embassy-lnbits-wrapper-lite
+#upstream-repo: https://github.com/deanhowe/embassy-lnbits-lite
+#support-page: https://t.me/joinchat/Fb4OcRo4LrRD6NXfsNdeeQ
+#marketing-page: https://lnbits.moof.uk/
 # Alerts: omitting these will result in using the default alerts in EmbassyOS, except for start, which has no default.
-install-alert: This is an alert that will present before the user installs this service
-uninstall-alert: This is an alert that will present before the user uninstalls this service
-restore-alert: This is an alert that will present before the user restores this service from Embassy backup
-start-alert: This is an alert that will present before the user starts this service
+install-alert: "LNbits is BETA software  -  this plugin is ALPHA software USE AT YOUR OWN RISK"
+uninstall-alert: "LNBITS WALLETS DELETED?"
+restore-alert: Hopefully you can restore service and wallets from an Embassy backup?
+start-alert: "LNbits is BETA software  -  this plugin is ALPHA software USE AT YOUR OWN RISK"
 
 # Denotes whether this service has an instructions page. If this is true, it will pack in `instructions.md` in the same
 # directory as this manifest.yaml
@@ -23,29 +32,53 @@ has-instructions: true
 os-version-required: ">=0.2.12"
 os-version-recommended: ">=0.2.12"
 
+#assets: 
+#  icon: icon.png
+
 # Port mappings from tor ports to the container port
+# if lan is standard, it will proxy HTTP traffic from 443 to the internal port
 ports:
-  - internal: 3000
-    tor: 3000
-    # if lan is custom, it will proxy HTTP traffic from the specified lan port to the internal port
+  - internal: 5000
+    tor: 80
+    lan: standard
+  - internal: 8080
+    tor: 3456
     lan:
       custom:
-        port: 80
-  - internal: 3001
-    tor: 3001
-    # if lan is standard, it will proxy HTTP traffic from 443 to the internal port
-    lan: standard
-  - internal: 3002
-    tor: 3002
-    # if lan is null it will disable access over the local area network
-    lan: ~
-
+        port: 8080
+  - internal: 5001
+    tor: 81
+    lan:
+      custom:
+        port: 81
+  - internal: 5002
+    tor: 82
+    lan:
+      custom:
+        port: 82
+  - internal: 5003
+    tor: 83
+    lan:
+      custom:
+        port: 83
+  - internal: 5004
+    tor: 84
+    lan:
+      custom:
+        port: 84
+  - internal: 5005
+    tor: 85
+    lan:
+      custom:
+        port: 85
+#  - internal: 5003
+#    tor: 80
 # Do not change this
 image:
   type: tar
 
 # specifies where on the service's file system its persistence directory should be mounted prior to service startup
-mount: /root
+mount: /relay
 
 # Directory you would like to expose to dependent services, specified relative to the root of the persistence directory.
 # This will be a read-only filesystem for the dependent service
@@ -58,22 +91,156 @@ shared: shared
 # Hidden Service version you would like to use for your services .onion url. Allowed options are "v2" and "v3"
 hidden-service-version: v3
 
-# This is a key value map specifying dependency services that you need to be able to function
-# The keys are the service id's on which you depend.
-# NOTE: if you are developing a standalone service, you may delete this entire stanza
 dependencies:
-  hello-world-dep:
-    # The version range that is acceptable for this dependency
-    version: ^0.1.0
-    # if `optional` is omitted, the dependency is required, otherwise it will display this string to explain why the
-    # dependency is optional
-    optional: This dependency is optional because of this reason
-    # Description of the dependency relationship
-    decription: hello-world uses hello-world-dep to demo dependencies
-    # If set to true it will mount the public directory of the dependency to $mount/start9/public/$dependencyId
+  lnd:
+    version: ">=0.12.1.3 <0.14.0"
+    optional: ~
+    description: "The LND node you wish to use with LNBits LEGEND"
     mount-public: true
-    # If set to true it will mount the shared directory of the dependency to $mount/start9/shared/$dependencyId
-    mount-public: true
-    # This is a list of rules that levies requirements on the configuration of the dependency and suggests ways to
-    # remedy any incompatibilities. Documentation of this feature is outside the scope of this example config.
+    mount-shared: true
+  c-lightning:
+    version: ">=0.10.0 <0.11.0"
+    description: Used to communicate with the Lightning Network.
     config: []
+    mount-shared: true
+
+###   - id: install-c-lightning
+##    name: Install addtional C-Lightning Python packages
+##    description: This action will install the required C-Lightning Python packages to use LNBits with C-Lightning
+##    allowed-statuses:
+##      - "RUNNING"
+##    command:
+##      - /home/lnbits/.local/lnbits_extra_actions
+##      - install-c-lightning
+##  - id: install-lnd-libraries
+##    name: Install addtional Python packages for LND compatibility
+##    description: This action will install the required RPC/GRP Python packages to use LNBits with LND
+##    allowed-statuses:
+##      - "RUNNING"
+##    command:
+##      - /home/lnbits/.local/lnbits_extra_actions
+##      - install-lnd-libraries
+
+
+actions:
+  - id: install-sqlite-web
+    name: Install SQLite Web Interface
+    description: This action will start the SQLite Web Interface
+    allowed-statuses:
+      - "RUNNING"
+    command:
+      - /home/lnbits/.local/lnbits_extra_actions
+      - install-sqlite-web
+  - id: start-sqlite-web
+    name: Start SQLite Web Interface
+    description: This action will start the SQLite Web Interface
+    allowed-statuses:
+      - "RUNNING"
+    command:
+      - /home/lnbits/.local/lnbits_extra_actions
+      - start-sqlite-web
+  - id: install-nano
+    name: Install Nano
+    description: This action will install nano
+    allowed-statuses:
+      - "RUNNING"
+    command:
+      - /home/lnbits/.local/lnbits_extra_actions
+      - install-nano
+  - id: start-linbits
+    name: Start LNBits Instance I
+    description: This action will START LNBits
+    allowed-statuses:
+      - "RUNNING"
+    command:
+      - /home/lnbits/.local/lnbits_extra_actions
+      - start-lnbits
+  - id: stop-linbits
+    name: Stop LNBits Instance I
+    description: This action will STOP LNBits
+    allowed-statuses:
+      - "RUNNING"
+    command:
+      - /home/lnbits/.local/lnbits_extra_actions
+      - stop-lnbits
+  - id: start-linbits-5001
+    name: Start LNBits Instance II
+    description: This action will START LNBits
+    allowed-statuses:
+      - "RUNNING"
+    command:
+      - /home/lnbits/.local/lnbits_extra_actions
+      - start-lnbits-5001
+  - id: stop-linbits-5001
+    name: Stop LNBits Instance II
+    description: This action will STOP LNBits
+    allowed-statuses:
+      - "RUNNING"
+    command:
+      - /home/lnbits/.local/lnbits_extra_actions
+      - stop-lnbits-5001
+  - id: start-linbits-5002
+    name: Start LNBits Instance III
+    description: This action will START LNBits
+    allowed-statuses:
+      - "RUNNING"
+    command:
+      - /home/lnbits/.local/lnbits_extra_actions
+      - start-lnbits-5002
+  - id: stop-linbits-5002
+    name: Stop LNBits Instance III
+    description: This action will STOP LNBits
+    allowed-statuses:
+      - "RUNNING"
+    command:
+      - /home/lnbits/.local/lnbits_extra_actions
+      - stop-lnbits-5002
+  - id: start-linbits-5003
+    name: Start LNBits Instance IV
+    description: This action will START LNBits
+    allowed-statuses:
+      - "RUNNING"
+    command:
+      - /home/lnbits/.local/lnbits_extra_actions
+      - start-lnbits-5003
+  - id: stop-linbits-5003
+    name: Stop LNBits Instance IV
+    description: This action will STOP LNBits
+    allowed-statuses:
+      - "RUNNING"
+    command:
+      - /home/lnbits/.local/lnbits_extra_actions
+      - stop-lnbits-5003
+  - id: start-linbits-5004
+    name: Start LNBits Instance V
+    description: This action will START LNBits
+    allowed-statuses:
+      - "RUNNING"
+    command:
+      - /home/lnbits/.local/lnbits_extra_actions
+      - start-lnbits-5004
+  - id: stop-linbits-5004
+    name: Stop LNBits Instance V
+    description: This action will STOP LNBits
+    allowed-statuses:
+      - "RUNNING"
+    command:
+      - /home/lnbits/.local/lnbits_extra_actions
+      - stop-lnbits-5004
+  - id: start-linbits-5005
+    name: Start LNBits Instance VI
+    description: This action will START LNBits
+    allowed-statuses:
+      - "RUNNING"
+    command:
+      - /home/lnbits/.local/lnbits_extra_actions
+      - start-lnbits-5005
+  - id: stop-linbits-5005
+    name: Stop LNBits Instance VI
+    description: This action will STOP LNBits
+    allowed-statuses:
+      - "RUNNING"
+    command:
+      - /home/lnbits/.local/lnbits_extra_actions
+      - stop-lnbits-5005
+

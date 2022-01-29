@@ -1,28 +1,18 @@
-ASSETS := $(shell yq e '.assets.[].src' manifest.yaml)
-ASSET_PATHS := $(addprefix assets/,$(ASSETS))
-VERSION := $(shell toml get hello-world/Cargo.toml package.version)
-HELLO_WORLD_SRC := $(shell find ./hello-world/src) hello-world/Cargo.toml hello-world/Cargo.lock
+LNBITS_SRC := $(shell find ./lnbits-legend/lnbits)
 
 .DELETE_ON_ERROR:
 
-all: hello-world.s9pk
+all: lnbitslegend-lite.s9pk
 
-install: hello-world.s9pk
-	appmgr install hello-world.s9pk
+install: lnbits.s9pk
+	appmgr install lnbits.s9pk
 
-hello-world.s9pk: manifest.yaml config_spec.yaml config_rules.yaml image.tar instructions.md $(ASSET_PATHS)
-	appmgr -vv pack $(shell pwd) -o hello-world.s9pk
-	appmgr -vv verify hello-world.s9pk
+lnbitslegend-lite.s9pk: manifest.yaml config_spec.yaml config_rules.yaml image.tar instructions.md icon.png
+	appmgr -vv pack $(shell pwd) -o lnbitslegend-lite.s9pk
+	appmgr -vv verify lnbitslegend-lite.s9pk
 
 instructions.md: README.md
 	cp README.md instructions.md
 
-image.tar: Dockerfile docker_entrypoint.sh hello-world/target/armv7-unknown-linux-musleabihf/release/hello-world
-	DOCKER_CLI_EXPERIMENTAL=enabled docker buildx build --tag start9/hello-world --platform=linux/arm/v7 -o type=docker,dest=image.tar .
-
-hello-world/target/armv7-unknown-linux-musleabihf/release/hello-world: $(HELLO_WORLD_SRC)
-	docker run --rm -it -v ~/.cargo/registry:/root/.cargo/registry -v "$(shell pwd)"/hello-world:/home/rust/src start9/rust-musl-cross:armv7-musleabihf cargo +beta build --release
-	docker run --rm -it -v ~/.cargo/registry:/root/.cargo/registry -v "$(shell pwd)"/hello-world:/home/rust/src start9/rust-musl-cross:armv7-musleabihf musl-strip target/armv7-unknown-linux-musleabihf/release/hello-world
-
-manifest.yaml: hello-world/Cargo.toml
-	yq e -i '.version = $(VERSION)' manifest.yaml
+image.tar: Dockerfile docker_entrypoint.sh $(LNBITS_SRC)
+	DOCKER_CLI_EXPERIMENTAL=enabled docker buildx build --security-opt=seccomp=unconfined --tag start9/lnbitslegend-lite --platform=linux/arm/v7 -o type=docker,dest=image.tar .
