@@ -64,8 +64,8 @@ RUN chmod a+x /home/lnbits/.local/lnbits_startup_script.sh
 COPY --chown=lnbits:lnbits ./scripts/lnbits_instance_startup.sh /home/lnbits/.local/lnbits_instance_startup.sh
 RUN chmod a+x /home/lnbits/.local/lnbits_instance_startup.sh
 
-COPY --chown=lnbits:lnbits ./blinkin.sh /home/lnbits/.local/blinkin
-RUN chmod a+x /home/lnbits/.local/blinkin
+#COPY --chown=lnbits:lnbits ./blinkin.sh /home/lnbits/.local/blinkin
+#RUN chmod a+x /home/lnbits/.local/blinkin
 
 RUN touch /var/log/lnbits.log && chown lnbits:lnbits /var/log/lnbits.log
 RUN touch /var/log/lnbits-access.log && chown lnbits:lnbits /var/log/lnbits-access.log
@@ -86,8 +86,8 @@ WORKDIR /home/lnbits/app
 
 EXPOSE 5005 5000 5001 5002 5003 5004 8080
 
-COPY --chown=lnbits:lnbits ./lnbits ./lnbits
-COPY --chown=lnbits:lnbits ./.env.embassy ./lnbits/
+#COPY --chown=lnbits:lnbits ./lnbits ./lnbits
+#COPY --chown=lnbits:lnbits ./.env.embassy ./lnbits/
 
 COPY --chown=lnbits:lnbits ./scripts/lnbits_extra_actions.sh /home/lnbits/.local/lnbits_extra_actions
 RUN chmod a+x /home/lnbits/.local/lnbits_extra_actions
