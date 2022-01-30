@@ -108,16 +108,19 @@ hidden-service-version: v3
 
 dependencies:
   lnd:
-    version: ">=0.12.1.3 <0.14.0"
-    optional: ~
+    version: ">=0.11.1 <0.14.0"
     description: "The LND node you wish to use with LNBits LEGEND"
-    mount-public: true
-    mount-shared: true
+    critical: false
+    requirement:
+      type: required
+    config: ~
   c-lightning:
-    version: ">=0.10.0 <0.11.0"
+    version: ">=0.10.1 <0.11.0"
     description: Used to communicate with the Lightning Network.
-    config: []
-    mount-shared: true
+    critical: true
+    requirement:
+      type: required
+    config: ~
 
 ###   - id: install-c-lightning
 ##    name: Install addtional C-Lightning Python packages
