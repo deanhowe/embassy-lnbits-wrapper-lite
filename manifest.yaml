@@ -1,6 +1,6 @@
 compat: v0
 id: lnbitslegend-lite
-version: 0.0.125
+version: 0.1.0
 title: "LNBits LITE LEGEND"
 description:
   short: "LNbits LEGEND LITE v0.1 BETA, free and open-source lightning-network wallet/accounts system"
@@ -29,48 +29,62 @@ has-instructions: true
 # Denotes the version required and recommended
 # Required means that the package will not install if unsatisfied
 # Recommended means that the package will not be listed by the registry to instances of EmbassyOS that do not satisfy it
-os-version-required: ">=0.2.12"
-os-version-recommended: ">=0.2.12"
+min-os-version: "0.3.0"
+os-version-required: ">=0.3.0"
+os-version-recommended: ">=0.3.0"
 
 #assets: 
 #  icon: icon.png
 
 # Port mappings from tor ports to the container port
 # if lan is standard, it will proxy HTTP traffic from 443 to the internal port
-ports:
-  - internal: 5000
-    tor: 80
-    lan: standard
-  - internal: 8080
-    tor: 3456
-    lan:
-      custom:
-        port: 8080
-  - internal: 5001
-    tor: 81
-    lan:
-      custom:
-        port: 81
-  - internal: 5002
-    tor: 82
-    lan:
-      custom:
-        port: 82
-  - internal: 5003
-    tor: 83
-    lan:
-      custom:
-        port: 83
-  - internal: 5004
-    tor: 84
-    lan:
-      custom:
-        port: 84
-  - internal: 5005
-    tor: 85
-    lan:
-      custom:
-        port: 85
+interfaces:
+  main:
+    name: Instance I
+    tor-config:
+      port-mapping:
+        5000: "80"
+    lan-config:
+      5000:
+        ssl: true
+        mapping: 443
+    ui: true
+    protocols:
+      - tcp
+      - http
+##  - internal: 5000
+##    tor: 80
+##    lan: standard
+##  - internal: 8080
+##    tor: 3456
+##    lan:
+##      custom:
+##        port: 8080
+##  - internal: 5001
+##    tor: 81
+##    lan:
+##      custom:
+##        port: 81
+##  - internal: 5002
+##    tor: 82
+##    lan:
+##      custom:
+##        port: 82
+##  - internal: 5003
+##    tor: 83
+##    lan:
+##      custom:
+##        port: 83
+##  - internal: 5004
+##    tor: 84
+##    lan:
+##      custom:
+##        port: 84
+##  - internal: 5005
+##    tor: 85
+##    lan:
+##      custom:
+##        port: 85
 #  - internal: 5003
 #    tor: 80
 # Do not change this
@@ -123,7 +137,7 @@ dependencies:
 
 
 actions:
-  - id: install-sqlite-web
+  install-sqlite-web:
     name: Install SQLite Web Interface
     description: This action will start the SQLite Web Interface
     allowed-statuses:
@@ -131,7 +145,7 @@ actions:
     command:
       - /home/lnbits/.local/lnbits_extra_actions
       - install-sqlite-web
-  - id: start-sqlite-web
+  start-sqlite-web:
     name: Start SQLite Web Interface
     description: This action will start the SQLite Web Interface
     allowed-statuses:
@@ -139,7 +153,7 @@ actions:
     command:
       - /home/lnbits/.local/lnbits_extra_actions
       - start-sqlite-web
-  - id: install-nano
+  install-nano:
     name: Install Nano
     description: This action will install nano
     allowed-statuses:
@@ -147,7 +161,7 @@ actions:
     command:
       - /home/lnbits/.local/lnbits_extra_actions
       - install-nano
-  - id: start-linbits
+  start-linbits:
     name: Start LNBits Instance I
     description: This action will START LNBits
     allowed-statuses:
@@ -155,7 +169,7 @@ actions:
     command:
       - /home/lnbits/.local/lnbits_extra_actions
       - start-lnbits
-  - id: stop-linbits
+  stop-linbits:
     name: Stop LNBits Instance I
     description: This action will STOP LNBits
     allowed-statuses:
@@ -163,7 +177,7 @@ actions:
     command:
       - /home/lnbits/.local/lnbits_extra_actions
       - stop-lnbits
-  - id: start-linbits-5001
+  start-linbits-5001:
     name: Start LNBits Instance II
     description: This action will START LNBits
     allowed-statuses:
@@ -171,7 +185,7 @@ actions:
     command:
       - /home/lnbits/.local/lnbits_extra_actions
       - start-lnbits-5001
-  - id: stop-linbits-5001
+  stop-linbits-5001:
     name: Stop LNBits Instance II
     description: This action will STOP LNBits
     allowed-statuses:
@@ -179,7 +193,7 @@ actions:
     command:
       - /home/lnbits/.local/lnbits_extra_actions
       - stop-lnbits-5001
-  - id: start-linbits-5002
+  start-linbits-5002:
     name: Start LNBits Instance III
     description: This action will START LNBits
     allowed-statuses:
@@ -187,7 +201,7 @@ actions:
     command:
       - /home/lnbits/.local/lnbits_extra_actions
       - start-lnbits-5002
-  - id: stop-linbits-5002
+  stop-linbits-5002:
     name: Stop LNBits Instance III
     description: This action will STOP LNBits
     allowed-statuses:
@@ -195,7 +209,7 @@ actions:
     command:
       - /home/lnbits/.local/lnbits_extra_actions
       - stop-lnbits-5002
-  - id: start-linbits-5003
+  start-linbits-5003:
     name: Start LNBits Instance IV
     description: This action will START LNBits
     allowed-statuses:
@@ -203,7 +217,7 @@ actions:
     command:
       - /home/lnbits/.local/lnbits_extra_actions
       - start-lnbits-5003
-  - id: stop-linbits-5003
+  stop-linbits-5003:
     name: Stop LNBits Instance IV
     description: This action will STOP LNBits
     allowed-statuses:
@@ -211,7 +225,7 @@ actions:
     command:
       - /home/lnbits/.local/lnbits_extra_actions
       - stop-lnbits-5003
-  - id: start-linbits-5004
+  start-linbits-5004:
     name: Start LNBits Instance V
     description: This action will START LNBits
     allowed-statuses:
@@ -219,7 +233,7 @@ actions:
     command:
       - /home/lnbits/.local/lnbits_extra_actions
       - start-lnbits-5004
-  - id: stop-linbits-5004
+  stop-linbits-5004:
     name: Stop LNBits Instance V
     description: This action will STOP LNBits
     allowed-statuses:
@@ -227,7 +241,7 @@ actions:
     command:
       - /home/lnbits/.local/lnbits_extra_actions
       - stop-lnbits-5004
-  - id: start-linbits-5005
+  start-linbits-5005:
     name: Start LNBits Instance VI
     description: This action will START LNBits
     allowed-statuses:
@@ -235,7 +249,7 @@ actions:
     command:
       - /home/lnbits/.local/lnbits_extra_actions
       - start-lnbits-5005
-  - id: stop-linbits-5005
+  stop-linbits-5005:
     name: Stop LNBits Instance VI
     description: This action will STOP LNBits
     allowed-statuses:
@@ -243,4 +257,3 @@ actions:
     command:
       - /home/lnbits/.local/lnbits_extra_actions
       - stop-lnbits-5005
-
