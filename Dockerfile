@@ -19,8 +19,8 @@ COPY --chown=lnbits:lnbits ./lnbits-legend/requirements.txt requirements_all.txt
 RUN pip3 install -r requirements_all.txt --no-warn-script-location
 
 RUN pip3 install pylightning
-RUN pip3 install lndgrpc
-RUN pip3 install purerpc
+#RUN pip3 install lndgrpc
+#RUN pip3 install purerpc
 
 #FROM alpine:3.12 as lnbits
 
