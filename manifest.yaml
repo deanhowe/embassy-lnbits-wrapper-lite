@@ -46,6 +46,9 @@ main:
     c-lightning: "/mnt/c-lightning"
     main: /datadir
   io-format: yaml
+
+health-checks: {}
+
 # Port mappings from tor ports to the container port
 # if lan is standard, it will proxy HTTP traffic from 443 to the internal port
 interfaces:
@@ -149,7 +152,6 @@ volumes:
 ##    command:
 ##      - /home/lnbits/.local/lnbits_extra_actions
 ##      - install-lnd-libraries
-
 
 actions:
   install-sqlite-web:
