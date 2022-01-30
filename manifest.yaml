@@ -13,9 +13,9 @@ license: mit
 license-info:
   license: MIT
   url: https://github.com/deanhowe/embassy-lnbits-wrapper-lite/blob/master/LICENSE
-#wrapper-repo: https://github.com/deanhowe/embassy-lnbits-wrapper-lite
-#upstream-repo: https://github.com/deanhowe/embassy-lnbits-lite
-#support-page: https://t.me/joinchat/Fb4OcRo4LrRD6NXfsNdeeQ
+wrapper-repo: https://github.com/deanhowe/embassy-lnbits-wrapper-lite
+upstream-repo: https://github.com/lnbits/lnbits-legend.git
+support-page: https://t.me/joinchat/Fb4OcRo4LrRD6NXfsNdeeQ
 #marketing-page: https://lnbits.moof.uk/
 # Alerts: omitting these will result in using the default alerts in EmbassyOS, except for start, which has no default.
 install-alert: "LNbits is BETA software  -  this plugin is ALPHA software USE AT YOUR OWN RISK"
