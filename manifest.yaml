@@ -9,9 +9,9 @@ release-notes: |
   - Added SQLite WEB
   - Added options to install python plugins
   Initial release.
-#license-info:
-#  license: MIT
-#  url: https://github.com/deanhowe/embassy-lnbits-wrapper-lite/blob/master/LICENSE
+license-info:
+  license: MIT
+  url: https://github.com/deanhowe/embassy-lnbits-wrapper-lite/blob/master/LICENSE
 #wrapper-repo: https://github.com/deanhowe/embassy-lnbits-wrapper-lite
 #upstream-repo: https://github.com/deanhowe/embassy-lnbits-lite
 #support-page: https://t.me/joinchat/Fb4OcRo4LrRD6NXfsNdeeQ
