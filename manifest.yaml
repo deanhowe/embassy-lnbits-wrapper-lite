@@ -41,6 +41,7 @@ os-version-recommended: ">=0.3.0"
 interfaces:
   main:
     name: Instance I
+    description: LNbits Instance I
     tor-config:
       port-mapping:
         5000: "80"
