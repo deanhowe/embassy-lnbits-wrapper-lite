@@ -146,118 +146,122 @@ actions:
     description: This action will start the SQLite Web Interface
     allowed-statuses:
       - "running"
-    command:
-      - /home/lnbits/.local/lnbits_extra_actions
-      - install-sqlite-web
-  start-sqlite-web:
-    name: Start SQLite Web Interface
-    description: This action will start the SQLite Web Interface
-    allowed-statuses:
-      - "running"
-    command:
-      - /home/lnbits/.local/lnbits_extra_actions
-      - start-sqlite-web
-  install-nano:
-    name: Install Nano
-    description: This action will install nano
-    allowed-statuses:
-      - "running"
-    command:
-      - /home/lnbits/.local/lnbits_extra_actions
-      - install-nano
-  start-linbits:
-    name: Start LNBits Instance I
-    description: This action will START LNBits
-    allowed-statuses:
-      - "running"
-    command:
-      - /home/lnbits/.local/lnbits_extra_actions
-      - start-lnbits
-  stop-linbits:
-    name: Stop LNBits Instance I
-    description: This action will STOP LNBits
-    allowed-statuses:
-      - "running"
-    command:
-      - /home/lnbits/.local/lnbits_extra_actions
-      - stop-lnbits
-  start-linbits-5001:
-    name: Start LNBits Instance II
-    description: This action will START LNBits
-    allowed-statuses:
-      - "running"
-    command:
-      - /home/lnbits/.local/lnbits_extra_actions
-      - start-lnbits-5001
-  stop-linbits-5001:
-    name: Stop LNBits Instance II
-    description: This action will STOP LNBits
-    allowed-statuses:
-      - "running"
-    command:
-      - /home/lnbits/.local/lnbits_extra_actions
-      - stop-lnbits-5001
-  start-linbits-5002:
-    name: Start LNBits Instance III
-    description: This action will START LNBits
-    allowed-statuses:
-      - "running"
-    command:
-      - /home/lnbits/.local/lnbits_extra_actions
-      - start-lnbits-5002
-  stop-linbits-5002:
-    name: Stop LNBits Instance III
-    description: This action will STOP LNBits
-    allowed-statuses:
-      - "running"
-    command:
-      - /home/lnbits/.local/lnbits_extra_actions
-      - stop-lnbits-5002
-  start-linbits-5003:
-    name: Start LNBits Instance IV
-    description: This action will START LNBits
-    allowed-statuses:
-      - "running"
-    command:
-      - /home/lnbits/.local/lnbits_extra_actions
-      - start-lnbits-5003
-  stop-linbits-5003:
-    name: Stop LNBits Instance IV
-    description: This action will STOP LNBits
-    allowed-statuses:
-      - "running"
-    command:
-      - /home/lnbits/.local/lnbits_extra_actions
-      - stop-lnbits-5003
-  start-linbits-5004:
-    name: Start LNBits Instance V
-    description: This action will START LNBits
-    allowed-statuses:
-      - "running"
-    command:
-      - /home/lnbits/.local/lnbits_extra_actions
-      - start-lnbits-5004
-  stop-linbits-5004:
-    name: Stop LNBits Instance V
-    description: This action will STOP LNBits
-    allowed-statuses:
-      - "running"
-    command:
-      - /home/lnbits/.local/lnbits_extra_actions
-      - stop-lnbits-5004
-  start-linbits-5005:
-    name: Start LNBits Instance VI
-    description: This action will START LNBits
-    allowed-statuses:
-      - "running"
-    command:
-      - /home/lnbits/.local/lnbits_extra_actions
-      - start-lnbits-5005
-  stop-linbits-5005:
-    name: Stop LNBits Instance VI
-    description: This action will STOP LNBits
-    allowed-statuses:
-      - "running"
-    command:
-      - /home/lnbits/.local/lnbits_extra_actions
-      - stop-lnbits-5005
+    implementation:
+      type: docker
+      image: main
+      entrypoint: /home/lnbits/.local/lnbits_extra_actions
+      args: ["install-sqlite-web"]
+      inject: true
+      io-format: json
+##  start-sqlite-web:
+##    name: Start SQLite Web Interface
+##    description: This action will start the SQLite Web Interface
+##    allowed-statuses:
+##      - "running"
+##    command:
+##      - /home/lnbits/.local/lnbits_extra_actions
+##      - start-sqlite-web
+##  install-nano:
+##    name: Install Nano
+##    description: This action will install nano
+##    allowed-statuses:
+##      - "running"
+##    command:
+##      - /home/lnbits/.local/lnbits_extra_actions
+##      - install-nano
+##  start-linbits:
+##    name: Start LNBits Instance I
+##    description: This action will START LNBits
+##    allowed-statuses:
+##      - "running"
+##    command:
+##      - /home/lnbits/.local/lnbits_extra_actions
+##      - start-lnbits
+##  stop-linbits:
+##    name: Stop LNBits Instance I
+##    description: This action will STOP LNBits
+##    allowed-statuses:
+##      - "running"
+##    command:
+##      - /home/lnbits/.local/lnbits_extra_actions
+##      - stop-lnbits
+##  start-linbits-5001:
+##    name: Start LNBits Instance II
+##    description: This action will START LNBits
+##    allowed-statuses:
+##      - "running"
+##    command:
+##      - /home/lnbits/.local/lnbits_extra_actions
+##      - start-lnbits-5001
+##  stop-linbits-5001:
+##    name: Stop LNBits Instance II
+##    description: This action will STOP LNBits
+##    allowed-statuses:
+##      - "running"
+##    command:
+##      - /home/lnbits/.local/lnbits_extra_actions
+##      - stop-lnbits-5001
+##  start-linbits-5002:
+##    name: Start LNBits Instance III
+##    description: This action will START LNBits
+##    allowed-statuses:
+##      - "running"
+##    command:
+##      - /home/lnbits/.local/lnbits_extra_actions
+##      - start-lnbits-5002
+##  stop-linbits-5002:
+##    name: Stop LNBits Instance III
+##    description: This action will STOP LNBits
+##    allowed-statuses:
+##      - "running"
+##    command:
+##      - /home/lnbits/.local/lnbits_extra_actions
+##      - stop-lnbits-5002
+##  start-linbits-5003:
+##    name: Start LNBits Instance IV
+##    description: This action will START LNBits
+##    allowed-statuses:
+##      - "running"
+##    command:
+##      - /home/lnbits/.local/lnbits_extra_actions
+##      - start-lnbits-5003
+##  stop-linbits-5003:
+##    name: Stop LNBits Instance IV
+##    description: This action will STOP LNBits
+##    allowed-statuses:
+##      - "running"
+##    command:
+##      - /home/lnbits/.local/lnbits_extra_actions
+##      - stop-lnbits-5003
+##  start-linbits-5004:
+##    name: Start LNBits Instance V
+##    description: This action will START LNBits
+##    allowed-statuses:
+##      - "running"
+##    command:
+##      - /home/lnbits/.local/lnbits_extra_actions
+##      - start-lnbits-5004
+##  stop-linbits-5004:
+##    name: Stop LNBits Instance V
+##    description: This action will STOP LNBits
+##    allowed-statuses:
+##      - "running"
+##    command:
+##      - /home/lnbits/.local/lnbits_extra_actions
+##      - stop-lnbits-5004
+##  start-linbits-5005:
+##    name: Start LNBits Instance VI
+##    description: This action will START LNBits
+##    allowed-statuses:
+##      - "running"
+##    command:
+##      - /home/lnbits/.local/lnbits_extra_actions
+##      - start-lnbits-5005
+##  stop-linbits-5005:
+##    name: Stop LNBits Instance VI
+##    description: This action will STOP LNBits
+##    allowed-statuses:
+##      - "running"
+##    command:
+##      - /home/lnbits/.local/lnbits_extra_actions
+##      - stop-lnbits-5005
