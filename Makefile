@@ -10,8 +10,6 @@ install: lnbits.s9pk
 
 lnbitslegend-lite.s9pk: manifest.yaml config_spec.yaml config_rules.yaml image.tar instructions.md icon.png
 	embassy-sdk pack
-
-hello-world.s9pk: manifest.yaml assets/compat/config_spec.yaml config_rules.yaml image.tar docs/instructions.md $(ASSET_PATHS)
 		
 # --security-opt=seccomp=unconfined --tag
 
