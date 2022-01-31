@@ -3,4 +3,4 @@
 export HOST_IP=$(ip -4 route list match 0/0 | awk '{print $3}')
 
 #exec tini lnbits-lite
-exec tail -f /var/log/syslog
+exec tail -f /var/log/lnbits.log
