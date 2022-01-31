@@ -1,5 +1,5 @@
 compat: v0
-id: lnbitslegend-lite
+id: lnbits-lite
 version: 0.1.0
 title: "LNBits LITE LEGEND"
 description:
@@ -56,7 +56,7 @@ main:
   io-format: yaml
 
 health-checks: {}
-
+config: ~ # Configuration options, none for hello-world, but see below example for format:
 # Port mappings from tor ports to the container port
 # if lan is standard, it will proxy HTTP traffic from 443 to the internal port
 interfaces:
@@ -130,8 +130,6 @@ volumes:
     type: data
   compat:
     type: assets
-  utils:
-    type: assets
   lnd:
     type: pointer
     package-id: lnd
@@ -160,20 +158,51 @@ volumes:
 ##    command:
 ##      - /home/lnbits/.local/lnbits_extra_actions
 ##      - install-lnd-libraries
-
-actions:
-  install-sqlite-web:
-    name: Install SQLite Web Interface
-    description: This action will start the SQLite Web Interface
-    allowed-statuses:
-      - "running"
-    implementation:
-      type: docker
-      image: main
-      entrypoint: /home/lnbits/.local/lnbits_extra_actions
-      args: ["install-sqlite-web"]
-      inject: true
-      io-format: json
+alerts: {}
+# for duplicity - backup mount point needs to be something other than `/root` - we default to `/root/data`
+backup:
+  create:
+    type: docker
+    image: compat # default backup process of the compat docker image is duplicity - EOS will have access to the image defined here
+    system: true 
+    entrypoint: compat # command to run the backup executable, in this case, duplicity
+    args: # arguments to pass into the entrypoint, in this case duplicity - in this example, the full command run will be: `duplicity hello-world file:///mnt/backup /root`
+      - duplicity
+      - lnbits-lite
+      - /mnt/backup
+      - /root
+    mounts:
+      # BACKUP is the default volume that is used for backups.  This is whatever backup drive is mounted to the defice, or a network filesystem.  
+      # The value here donates where the data mount point will be.  Backup drive is mounted to this location, which contains previous backups.
+      BACKUP: "/mnt/backup" 
+      main: "/root"
+  restore:
+    type: docker
+    image: compat
+    system: true
+    entrypoint: compat
+    args:
+      - duplicity
+      - lnbits-lite
+      - /root
+      - /mnt/backup
+    mounts:
+      # See above comments under `backup: -> mounts:`
+      BACKUP: "/mnt/backup"
+      main: "/root"
+actions: {}
+##  install-sqlite-web:
+##    name: Install SQLite Web Interface
+##    description: This action will start the SQLite Web Interface
+##    allowed-statuses:
+##      - "running"
+##    implementation:
+##      type: docker
+##      image: main
+##      entrypoint: /home/lnbits/.local/lnbits_extra_actions
+##      args: ["install-sqlite-web"]
+##      inject: true
+##      io-format: json
 ##  start-sqlite-web:
 ##    name: Start SQLite Web Interface
 ##    description: This action will start the SQLite Web Interface
@@ -286,33 +315,3 @@ actions:
 ##    command:
 ##      - /home/lnbits/.local/lnbits_extra_actions
 ##      - stop-lnbits-5005
-
-backup:
-  create:
-    type: docker
-    image: compat
-    system: true
-    entrypoint: compat
-    args:
-      - duplicity
-      - create
-      - /mnt/backup
-      - /root/data
-    mounts:
-      BACKUP: /mnt/backup
-      main: /root/data
-    io-format: yaml
-  restore:
-    type: docker
-    image: compat
-    system: true
-    entrypoint: compat
-    args:
-      - duplicity
-      - restore
-      - /mnt/backup
-      - /root/data
-    mounts:
-      BACKUP: /mnt/backup
-      main: /root/data
-    io-format: yaml
