@@ -1,6 +1,6 @@
 compat: v0
 id: lnbits-lite
-version: 0.1.1
+version: 0.1.2
 title: "LNBits LITE LEGEND"
 description:
   short: "LNbits LEGEND LITE v0.1 BETA, free and open-source lightning-network wallet/accounts system"

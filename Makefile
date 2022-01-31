@@ -14,7 +14,7 @@ verify: lnbits-lite.s9pk $(S9PK_PATH)
 #install: lnbits.s9pk
 #	embassy-cli package install lnbits.s9pk
 
-lnbits-lite.s9pk: manifest.yaml assets/compat/config_spec.yaml config_rules.yaml image.tar docs/instructions.md icon.png $(ASSET_PATHS)
+lnbits-lite.s9pk: manifest.yaml config_rules.yaml image.tar docs/instructions.md icon.png $(ASSET_PATHS)
 	embassy-sdk pack
 		
 # --security-opt=seccomp=unconfined --tag
@@ -26,5 +26,5 @@ lnbits-lite/target/aarch64-unknown-linux-musl/release/lnbits-lite: $(LNBITS_LITE
 		#docker run --rm -it -v ~/.cargo/registry:/root/.cargo/registry -v "$(shell pwd)"/lnbits-lite:/home/rust/src start9/rust-musl-cross:aarch64-musl cargo +beta build --release
 		docker run --rm -it -v ~/.cargo/registry:/root/.cargo/registry -v "$(shell pwd)"/lnbits-lite:/home/rust/src start9/rust-musl-cross:aarch64-musl musl-strip target/aarch64-unknown-linux-musl/release/lnbits-lite
 
-manifest.yaml: lnbits-lite/Cargo.toml
-		yq e -i '.version="$(VERSION)"' manifest.yaml
+#manifest.yaml: lnbits-lite/Cargo.toml
+#		yq e -i '.version="$(VERSION)"' manifest.yaml

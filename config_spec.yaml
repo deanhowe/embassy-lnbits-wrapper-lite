@@ -1,379 +1,379 @@
 # These are the configuration options available to the user in the UI on the Service page, under 'Config.'
 # See github.com/Start9Labs/lnd-wrapper for a good example config_spec
 
-{}
+#{}
 
-when
-type: pointer
+#when
+#type: pointer
 # interface is the interface in the dependecy's package that you want to connect to - ie control in lnd
-interface: _
+#interface: _
 
-##instances:
-##  type: list
-##  subtype: object
-##  name: Instances
-##  description: List of LNBits instances to manage
-##  range: "[1,7)"
-##  spec:
-##    uniqueBy: connection-settings
-##    displayAs: "{{name}}"
-##    spec:
-##      name:
-##        type: string
-##        name: Account Name
-##        description: Name of this account in the login list
-##        nullable: false
-##        changeWarning: |
-##          Do not use the name "Master" here or the properties menu will confuse you.
-##      connection-settings:
-##          type: union
-##          name: Connection Settings
-##          tag:
-##            id: type
-##            name: Type
-##            description: |
-##              - Internal C-Lightning: The C-Lightning service on this Embassy [CLightningWallet]
-##              - Internal LND: The LND (GRPC) service installed on this Embassy [LndWallet]
-##              - Internal LND REST: The LND (REST) node running on this Embassy [LndRestWallet]
-##              - External LND GRPC: An LND (GRPC) node running on a different device over GRPC [LndWallet]
-##              - External LND REST: An LND (REST) node running on a different device over REST [LndRestWallet]
-##              - Spark: An External Spark Wallet
-##              - LNbits: An LNbits Instance
-##              - LNPayWallet: An LNPay API account
-##              - LntxbotWallet: An LNTXbot API account
-##              - OpenNode: An OpenNode instance
-##            variantNames:
-##              # Will this take comments?
-##              # Choose from LNPayWallet, OpenNodeWallet, LntxbotWallet, LndWallet (gRPC),
-##              # LndRestWallet, CLightningWallet, LNbitsWallet, SparkWallet
-##              # CLightningWallet
-##              CLightningWallet: Internal C-Lightning
-##              # LndWallet
-##              LndWalletInternal: Internal GRPC LND
-##              # LndRestWallet
-##              LndRestWalletInternal: Internal LND REST
-##              # LndWallet
-##              LndWallet: External GRPC LND
-##              # LndRestWallet
-##              LndRestWallet: External LND REST
-##              # SparkWallet
-##              SparkWallet: External Spark Wallet
-##              LNbitsWallet: External LNBits Instance
-##              LNPayWallet: External LNPay
-##              LntxbotWallet: External LNTXTBot Account
-##              OpenNodeWallet: External OpenNode             
-##          default: CLightningWallet
-##          variants:
-##            CLightningWallet:
-##              c-lightning-internal-address:
-##                type: pointer
-##                name: Local IP
-##                description: The LAN IP address of your C-Lightning service
-##                subtype: app
-##                app-id: c-lightning
-##                target: lan-address
-##            LndWalletInternal:
-##              address:
-##                type: pointer
-##                name: Local IP
-##                description: The LAN IP address of your LND service
-##                subtype: app
-##                app-id: lnd
-##                target: lan-address
-##            LndRestWalletInternal:
-##              address:
-##                type: pointer
-##                name: Local IP
-##                description: The LAN IP address of your LND service
-##                subtype: app
-##                app-id: lnd
-##                target: lan-address
-##            LndWallet:
-##              addressext:
-##                type: string
-##                name: Public Address
-##                description: The public address of your LND node, NOTE that external tor nodes do not work yet.
-##                nullable: false
-##              port:
-##                type: number
-##                name: Port
-##                description: The gRPC port of your LND node
-##                nullable: false
-##                range: "[0,65535]"
-##                integral: true
-##                default: 10009
-##              macaroon:
-##                type: string
-##                name: Admin Macaroon
-##                description: Base64 encoded admin macaroon from your LND node
-##                nullable: false
-##                pattern: "^[a-zA-Z0-9/+]+[=]{0,2}$"
-##                patternDescription: Must be a valid base64 string
-##              certificate:
-##                type: string
-##                name: TLS Certificate
-##                description: Base64 encoded tls certificate from your LND node
-##                nullable: false
-##                pattern: "^[a-zA-Z0-9/+]+[=]{0,2}$"
-##                patternDescription: Must be a valid base64 string
-##            LndRestWallet:
-##              addressext:
-##                type: string
-##                name: Public Address
-##                description: The public address of your LND node, NOTE that external tor nodes do not work yet.
-##                nullable: false
-##              port:
-##                type: number
-##                name: Port
-##                description: The REST port of your LND node
-##                nullable: false
-##                range: "[0,65535]"
-##                integral: true
-##                default: 8080
-##              macaroon:
-##                type: string
-##                name: Admin Macaroon
-##                description: Base64 encoded admin macaroon from your LND node
-##                nullable: false
-##                pattern: "^[a-zA-Z0-9/+]+[=]{0,2}$"
-##                patternDescription: Must be a valid base64 string
-##              certificate:
-##                type: string
-##                name: TLS Certificate
-##                description: Base64 encoded tls certificate from your LND node
-##                nullable: false
-##                pattern: "^[a-zA-Z0-9/+]+[=]{0,2}$"
-##                patternDescription: Must be a valid base64 string
-##            SparkWallet:
-##              lnbits-spark-url-with-port:
-##                type: string
-##                name: "SPARK_URL"
-##                description: SPARK_URL NOT TESTED
-##                nullable: false
-##                pattern: #\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#iS
-##                patternDescription: Must be a valid URL
-##                copyable: true
-##                default: "http://localhost:9737/rpc"
-##              lnbits-spark-token:
-##                type: string
-##                name: "SPARK_TOKEN"
-##                description: Secret token for Spark
-##                nullable: false
-##                pattern: '^[^\n:]+$'
-##                patternDescription: May not contain newline or ":"
-##                copyable: true
-##                default: "myaccesstoken"
-##            LNbitsWallet:
-##              lnbits-lnbits-api-endpoint:
-##                type: string
-##                name: "LNBits API Endpoint"
-##                description: "An external LNBits API Endpoint to use as a funding source."
-##                nullable: false
-##                pattern: #\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#iS
-##                patternDescription: Must be a valid URL
-##                copyable: true
-##                default: "http://127.0.0.1:50001"
-##              lnbits-lnbits-api-admin-key:
-##                type: string
-##                name: "LNBits API Admin Key"
-##                description: Secret API Key for LNBits
-##                nullable: false
-##                pattern: '^[^\n:]+$'
-##                patternDescription: May not contain newline or ":"
-##                copyable: true
-##                default: "LNBITS_ADMIN_KEY"
-##            LNPayWallet:
-##              lnbits-lnpay-api-endpoint:
-##                type: string
-##                name: "LNPay API Endpoint"
-##                description: "An external LNPay API Endpoint to use as a funding source."
-##                nullable: false
-##                pattern: #\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#iS
-##                patternDescription: Must be a valid URL
-##                copyable: true
-##                default: "https://api.lnpay.co/v1/"
-##              lnbits-lnpay-api-key:
-##                type: string
-##                name: "LNPay API KEY"
-##                description: "Secret LNPay API Key under the developers tab"
-##                nullable: false
-##                pattern: '^[^\n:]+$'
-##                patternDescription: May not contain newline or ":"
-##                copyable: true
-##                default: "LNPAY_API_KEY"
-##              lnbits-lnpay-wallet-key:
-##                type: string
-##                name: "LNPAY_WALLET_KEY"
-##                description: Wallet Admin in Wallet Access Key
-##                nullable: false
-##                pattern: '^[^\n:]+$'
-##                patternDescription: May not contain newline or ":"
-##                copyable: true
-##                default: "LNPAY_ADMIN_KEY"
-##            LntxbotWallet:
-##              lnbits-lntxbot-api-endpoint:
-##                type: string
-##                name: "LNTXBOT API Endpoint"
-##                description: LNTXBOT_API_ENDPOINT
-##                nullable: false
-##                pattern: #\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#iS
-##                patternDescription: Must be a valid URL
-##                copyable: true
-##                default: "https://lntxbot.bigsun.xyz/"
-##              lnbits-lntxbot-api-key:
-##                type: string
-##                name: "LNTXBOT API KEY"
-##                description: Secret API Key from LNTXBOT
-##                nullable: false
-##                pattern: '^[^\n:]+$'
-##                patternDescription: May not contain newline or ":"
-##                copyable: true
-##                default: "LNBITS_LNTXBOT_ADMIN_KEY"
-##            OpenNodeWallet:
-##              lnbits-opennode-api-endpoint:
-##                type: string
-##                name: "OpenNode API Endpoint"
-##                description: OPENNODE_API_ENDPOINT
-##                nullable: false
-##                pattern: #\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#iS
-##                patternDescription: Must be a valid URL
-##                copyable: true
-##                default: "https://api.opennode.com/"
-##              lnbits-opennode-api-key:
-##                type: string
-##                name: "LNTXBOT API KEY"
-##                description: Secret API Key from OPENNODE_KEY
-##                nullable: false
-##                pattern: '^[^\n:]+$'
-##                patternDescription: May not contain newline or ":"
-##                copyable: true
-##                default: "LNBITS_OPENNODE_ADMIN_KEY"
-##      lnbits-site-meta:
-##        type: object
-##        name: Site Meta Data
-##        description: Site Meta Data for LNBits Legend Lite
-##        nullable: true
-##        spec:
-##          lnbits-site-title:
-##            type: string
-##            name: "Site Title"
-##            description: "The website title of the LNBits instance."
-##            nullable: false
-##            pattern: '^[^\n:]+$'
-##            patternDescription: May not contain newline or ":"
-##            copyable: true
-##            default: "LNbits LEGEND on Embassy OS 0.2.x"
-##          default-wallet-name:
-##            type: string
-##            name: "Default Wallet Name"
-##            description: "The default wallet name."
-##            nullable: false
-##            pattern: '^[^\n:]+$'
-##            patternDescription: May not contain newline or ":"
-##            copyable: true
-##            default: "LNbits wallet"
-##          lnbits-site-tagline:
-##            type: string
-##            name: "Site Tagline"
-##            description: "The website tagline of the LNBits instance."
-##            nullable: false
-##            pattern: '^[^\n:]+$'
-##            patternDescription: May not contain newline or ":"
-##            copyable: true
-##            default: "free and open-source lightning wallet"
-##          lnbits-site-description:
-##            type: string
-##            name: "Site Description"
-##            description: "The website description for the LNBits instance."
-##            nullable: false
-##            pattern: '^[^\n:]+$'
-##            patternDescription: May not contain newline or ":"
-##            copyable: true
-##            default: "Some description about your service, will display if title is not 'LNbits'"
-##          lnbits-theme-option:
-##            type: enum
-##            name: "Theme Selection"
-##            values:
-##              - mint
-##              - flamingo
-##              - classic
-##              - autumn
-##              - monochrome
-##              - salvador
-##            valueNames:
-##              mint: Mint
-##              flamingo: Flamingo
-##              classic: Classic
-##              autumn: Autumn
-##              monochrome: Monochrome
-##              salvador: Salvador
-##            default: classic
-##      lnbits-quart:
-##        type: object
-##        name: Quart (Advanced/Developer) Settings
-##        description: Advanced/Developer settings for LNBits Legend Lite
-##        nullable: true
-##        spec:
-##          lnbits-quart-app:
-##            type: string
-##            name: "Quart App start-up string"
-##            description: 'Might be sensible to leave alone this unless you really understand what it does :)'
-##            nullable: false
-##            pattern: '^[^\n]+$'
-##            patternDescription: "May not contain newlines"
-##            copyable: true
-##            default: "lnbits.app:create_app()"
-##          lnbits-quart-env:
-##            type: enum
-##            name: "Quart run-time Environment"
-##            changeWarning: "By default LNBits runs in development mode"
-##            values:
-##              - development
-##              - producution
-##            valueNames:
-##              development: development
-##              producution: producution
-##            default: development
-##          lnbits-quart-debug:
-##            type: boolean
-##            name: Quart Debug Mode
-##            description: "Run LNbits in debug mode?"
-##            changeWarning: "Having debug mode on might expose sensitive data - but that might also happen with it off so probably best to leave to the default?"
-##            default: true
-##          lnbits-force-https:
-##            type: boolean
-##            name: "Force https"
-##            description: "LNBits requires a valid SSL to accept https calls over clearnet."
-##            changeWarning: "Use this at you own risk, in theory Embassy OS handles https & SSL"
-##            default: true
-##          lnbits-disabled-extentions:
-##            type: string
-##            name: "Disabled extensions"
-##            description: "A comma separated list of LNBits extensions."
-##            nullable: true
-##            pattern: '^[a-zA-Z_\-0-9,]*$'
-##            patternDescription: Can only contain letters and commas
-##            copyable: true
-##            default: 'amilk,ngrok,lnurlpos'
-##      lnbits-allowed-users:
-##        type: string
-##        name: "Allowed Users"
-##        description: "A comma separated list of account IDs"
-##        nullable: true
-##        pattern: '^[a-zA-Z0-9,]*$'
-##        patternDescription: Can only contain letters and commas
-##        copyable: true
-##        default: ""
-##      lnbits-service-fee:
-##          type: string
-##          name: "Service Fee"
-##          description: What is the service fee?
-##          changeWarning: "Changing fees"
-##          nullable: true
-##          pattern: '^[^\n:]+$'
-##          patternDescription: May not contain newline or ":"
-##          default: '0.0'
-##  default:
-##    - name: Embassy C-Lightning
-##      connection-settings:
-##        type: CLightningWallet
+instances:
+  type: list
+  subtype: object
+  name: Instances
+  description: List of LNBits instances to manage
+  range: "[1,7)"
+  spec:
+    uniqueBy: connection-settings
+    displayAs: "{{name}}"
+    spec:
+      name:
+        type: string
+        name: Account Name
+        description: Name of this account in the login list
+        nullable: false
+        changeWarning: |
+          Do not use the name "Master" here or the properties menu will confuse you.
+      connection-settings:
+          type: union
+          name: Connection Settings
+          tag:
+            id: type
+            name: Type
+            description: |
+              - Internal C-Lightning: The C-Lightning service on this Embassy [CLightningWallet]
+              - Internal LND: The LND (GRPC) service installed on this Embassy [LndWallet]
+              - Internal LND REST: The LND (REST) node running on this Embassy [LndRestWallet]
+              - External LND GRPC: An LND (GRPC) node running on a different device over GRPC [LndWallet]
+              - External LND REST: An LND (REST) node running on a different device over REST [LndRestWallet]
+              - Spark: An External Spark Wallet
+              - LNbits: An LNbits Instance
+              - LNPayWallet: An LNPay API account
+              - LntxbotWallet: An LNTXbot API account
+              - OpenNode: An OpenNode instance
+            variantNames:
+              # Will this take comments?
+              # Choose from LNPayWallet, OpenNodeWallet, LntxbotWallet, LndWallet (gRPC),
+              # LndRestWallet, CLightningWallet, LNbitsWallet, SparkWallet
+              # CLightningWallet
+              CLightningWallet: Internal C-Lightning
+              # LndWallet
+              LndWalletInternal: Internal GRPC LND
+              # LndRestWallet
+              LndRestWalletInternal: Internal LND REST
+              # LndWallet
+              LndWallet: External GRPC LND
+              # LndRestWallet
+              LndRestWallet: External LND REST
+              # SparkWallet
+              SparkWallet: External Spark Wallet
+              LNbitsWallet: External LNBits Instance
+              LNPayWallet: External LNPay
+              LntxbotWallet: External LNTXTBot Account
+              OpenNodeWallet: External OpenNode             
+          default: CLightningWallet
+          variants:
+            CLightningWallet:
+              c-lightning-internal-address:
+                type: pointer
+                name: Local IP
+                description: The LAN IP address of your C-Lightning service
+                subtype: app
+                app-id: c-lightning
+                target: lan-address
+            LndWalletInternal:
+              address:
+                type: pointer
+                name: Local IP
+                description: The LAN IP address of your LND service
+                subtype: app
+                app-id: lnd
+                target: lan-address
+            LndRestWalletInternal:
+              address:
+                type: pointer
+                name: Local IP
+                description: The LAN IP address of your LND service
+                subtype: app
+                app-id: lnd
+                target: lan-address
+            LndWallet:
+              addressext:
+                type: string
+                name: Public Address
+                description: The public address of your LND node, NOTE that external tor nodes do not work yet.
+                nullable: false
+              port:
+                type: number
+                name: Port
+                description: The gRPC port of your LND node
+                nullable: false
+                range: "[0,65535]"
+                integral: true
+                default: 10009
+              macaroon:
+                type: string
+                name: Admin Macaroon
+                description: Base64 encoded admin macaroon from your LND node
+                nullable: false
+                pattern: "^[a-zA-Z0-9/+]+[=]{0,2}$"
+                patternDescription: Must be a valid base64 string
+              certificate:
+                type: string
+                name: TLS Certificate
+                description: Base64 encoded tls certificate from your LND node
+                nullable: false
+                pattern: "^[a-zA-Z0-9/+]+[=]{0,2}$"
+                patternDescription: Must be a valid base64 string
+            LndRestWallet:
+              addressext:
+                type: string
+                name: Public Address
+                description: The public address of your LND node, NOTE that external tor nodes do not work yet.
+                nullable: false
+              port:
+                type: number
+                name: Port
+                description: The REST port of your LND node
+                nullable: false
+                range: "[0,65535]"
+                integral: true
+                default: 8080
+              macaroon:
+                type: string
+                name: Admin Macaroon
+                description: Base64 encoded admin macaroon from your LND node
+                nullable: false
+                pattern: "^[a-zA-Z0-9/+]+[=]{0,2}$"
+                patternDescription: Must be a valid base64 string
+              certificate:
+                type: string
+                name: TLS Certificate
+                description: Base64 encoded tls certificate from your LND node
+                nullable: false
+                pattern: "^[a-zA-Z0-9/+]+[=]{0,2}$"
+                patternDescription: Must be a valid base64 string
+            SparkWallet:
+              lnbits-spark-url-with-port:
+                type: string
+                name: "SPARK_URL"
+                description: SPARK_URL NOT TESTED
+                nullable: false
+                pattern: #\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#iS
+                patternDescription: Must be a valid URL
+                copyable: true
+                default: "http://localhost:9737/rpc"
+              lnbits-spark-token:
+                type: string
+                name: "SPARK_TOKEN"
+                description: Secret token for Spark
+                nullable: false
+                pattern: '^[^\n:]+$'
+                patternDescription: May not contain newline or ":"
+                copyable: true
+                default: "myaccesstoken"
+            LNbitsWallet:
+              lnbits-lnbits-api-endpoint:
+                type: string
+                name: "LNBits API Endpoint"
+                description: "An external LNBits API Endpoint to use as a funding source."
+                nullable: false
+                pattern: #\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#iS
+                patternDescription: Must be a valid URL
+                copyable: true
+                default: "http://127.0.0.1:50001"
+              lnbits-lnbits-api-admin-key:
+                type: string
+                name: "LNBits API Admin Key"
+                description: Secret API Key for LNBits
+                nullable: false
+                pattern: '^[^\n:]+$'
+                patternDescription: May not contain newline or ":"
+                copyable: true
+                default: "LNBITS_ADMIN_KEY"
+            LNPayWallet:
+              lnbits-lnpay-api-endpoint:
+                type: string
+                name: "LNPay API Endpoint"
+                description: "An external LNPay API Endpoint to use as a funding source."
+                nullable: false
+                pattern: #\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#iS
+                patternDescription: Must be a valid URL
+                copyable: true
+                default: "https://api.lnpay.co/v1/"
+              lnbits-lnpay-api-key:
+                type: string
+                name: "LNPay API KEY"
+                description: "Secret LNPay API Key under the developers tab"
+                nullable: false
+                pattern: '^[^\n:]+$'
+                patternDescription: May not contain newline or ":"
+                copyable: true
+                default: "LNPAY_API_KEY"
+              lnbits-lnpay-wallet-key:
+                type: string
+                name: "LNPAY_WALLET_KEY"
+                description: Wallet Admin in Wallet Access Key
+                nullable: false
+                pattern: '^[^\n:]+$'
+                patternDescription: May not contain newline or ":"
+                copyable: true
+                default: "LNPAY_ADMIN_KEY"
+            LntxbotWallet:
+              lnbits-lntxbot-api-endpoint:
+                type: string
+                name: "LNTXBOT API Endpoint"
+                description: LNTXBOT_API_ENDPOINT
+                nullable: false
+                pattern: #\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#iS
+                patternDescription: Must be a valid URL
+                copyable: true
+                default: "https://lntxbot.bigsun.xyz/"
+              lnbits-lntxbot-api-key:
+                type: string
+                name: "LNTXBOT API KEY"
+                description: Secret API Key from LNTXBOT
+                nullable: false
+                pattern: '^[^\n:]+$'
+                patternDescription: May not contain newline or ":"
+                copyable: true
+                default: "LNBITS_LNTXBOT_ADMIN_KEY"
+            OpenNodeWallet:
+              lnbits-opennode-api-endpoint:
+                type: string
+                name: "OpenNode API Endpoint"
+                description: OPENNODE_API_ENDPOINT
+                nullable: false
+                pattern: #\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#iS
+                patternDescription: Must be a valid URL
+                copyable: true
+                default: "https://api.opennode.com/"
+              lnbits-opennode-api-key:
+                type: string
+                name: "LNTXBOT API KEY"
+                description: Secret API Key from OPENNODE_KEY
+                nullable: false
+                pattern: '^[^\n:]+$'
+                patternDescription: May not contain newline or ":"
+                copyable: true
+                default: "LNBITS_OPENNODE_ADMIN_KEY"
+      lnbits-site-meta:
+        type: object
+        name: Site Meta Data
+        description: Site Meta Data for LNBits Legend Lite
+        nullable: true
+        spec:
+          lnbits-site-title:
+            type: string
+            name: "Site Title"
+            description: "The website title of the LNBits instance."
+            nullable: false
+            pattern: '^[^\n:]+$'
+            patternDescription: May not contain newline or ":"
+            copyable: true
+            default: "LNbits LEGEND on Embassy OS 0.2.x"
+          default-wallet-name:
+            type: string
+            name: "Default Wallet Name"
+            description: "The default wallet name."
+            nullable: false
+            pattern: '^[^\n:]+$'
+            patternDescription: May not contain newline or ":"
+            copyable: true
+            default: "LNbits wallet"
+          lnbits-site-tagline:
+            type: string
+            name: "Site Tagline"
+            description: "The website tagline of the LNBits instance."
+            nullable: false
+            pattern: '^[^\n:]+$'
+            patternDescription: May not contain newline or ":"
+            copyable: true
+            default: "free and open-source lightning wallet"
+          lnbits-site-description:
+            type: string
+            name: "Site Description"
+            description: "The website description for the LNBits instance."
+            nullable: false
+            pattern: '^[^\n:]+$'
+            patternDescription: May not contain newline or ":"
+            copyable: true
+            default: "Some description about your service, will display if title is not 'LNbits'"
+          lnbits-theme-option:
+            type: enum
+            name: "Theme Selection"
+            values:
+              - mint
+              - flamingo
+              - classic
+              - autumn
+              - monochrome
+              - salvador
+            valueNames:
+              mint: Mint
+              flamingo: Flamingo
+              classic: Classic
+              autumn: Autumn
+              monochrome: Monochrome
+              salvador: Salvador
+            default: classic
+      lnbits-quart:
+        type: object
+        name: Quart (Advanced/Developer) Settings
+        description: Advanced/Developer settings for LNBits Legend Lite
+        nullable: true
+        spec:
+          lnbits-quart-app:
+            type: string
+            name: "Quart App start-up string"
+            description: 'Might be sensible to leave alone this unless you really understand what it does :)'
+            nullable: false
+            pattern: '^[^\n]+$'
+            patternDescription: "May not contain newlines"
+            copyable: true
+            default: "lnbits.app:create_app()"
+          lnbits-quart-env:
+            type: enum
+            name: "Quart run-time Environment"
+            changeWarning: "By default LNBits runs in development mode"
+            values:
+              - development
+              - producution
+            valueNames:
+              development: development
+              producution: producution
+            default: development
+          lnbits-quart-debug:
+            type: boolean
+            name: Quart Debug Mode
+            description: "Run LNbits in debug mode?"
+            changeWarning: "Having debug mode on might expose sensitive data - but that might also happen with it off so probably best to leave to the default?"
+            default: true
+          lnbits-force-https:
+            type: boolean
+            name: "Force https"
+            description: "LNBits requires a valid SSL to accept https calls over clearnet."
+            changeWarning: "Use this at you own risk, in theory Embassy OS handles https & SSL"
+            default: true
+          lnbits-disabled-extentions:
+            type: string
+            name: "Disabled extensions"
+            description: "A comma separated list of LNBits extensions."
+            nullable: true
+            pattern: '^[a-zA-Z_\-0-9,]*$'
+            patternDescription: Can only contain letters and commas
+            copyable: true
+            default: 'amilk,ngrok,lnurlpos'
+      lnbits-allowed-users:
+        type: string
+        name: "Allowed Users"
+        description: "A comma separated list of account IDs"
+        nullable: true
+        pattern: '^[a-zA-Z0-9,]*$'
+        patternDescription: Can only contain letters and commas
+        copyable: true
+        default: ""
+      lnbits-service-fee:
+          type: string
+          name: "Service Fee"
+          description: What is the service fee?
+          changeWarning: "Changing fees"
+          nullable: true
+          pattern: '^[^\n:]+$'
+          patternDescription: May not contain newline or ":"
+          default: '0.0'
+  default:
+    - name: Embassy C-Lightning
+      connection-settings:
+        type: CLightningWallet
