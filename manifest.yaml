@@ -25,7 +25,7 @@ start-alert: "LNbits is BETA software  -  this plugin is ALPHA software USE AT Y
 
 # Denotes whether this service has an instructions page. If this is true, it will pack in `instructions.md` in the same
 # directory as this manifest.yaml
-has-instructions: true
+#has-instructions: true
 
 # Denotes the version required and recommended
 # Required means that the package will not install if unsatisfied
@@ -34,8 +34,16 @@ min-os-version: "0.3.0"
 os-version-required: ">=0.3.0"
 os-version-recommended: ">=0.3.0"
 
-#assets: 
-#  icon: icon.png
+assets:
+  # Default = LICENSE.md
+  license: LICENSE
+  # Default = icon.png
+  icon: icon.png
+  # Default = INSTRUCTIONS.md
+  instructions: docs/instructions.md
+  # Default = image.tar
+  docker-images: image.tar
+# The main action for initializing the service. Currently, the only type of action available is docker.
 main:
   type: docker
   image: main
