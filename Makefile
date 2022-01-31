@@ -27,4 +27,4 @@ lnbits-lite/target/aarch64-unknown-linux-musl/release/lnbits-lite: $(LNBITS_LITE
 		docker run --rm -it -v ~/.cargo/registry:/root/.cargo/registry -v "$(shell pwd)"/lnbits-lite:/home/rust/src start9/rust-musl-cross:aarch64-musl musl-strip target/aarch64-unknown-linux-musl/release/lnbits-lite
 
 manifest.yaml: lnbits-lite/Cargo.toml
-		yq e -i '.version = $(VERSION)' manifest.yaml
+		yq e -i '.version="$(VERSION)"' manifest.yaml
