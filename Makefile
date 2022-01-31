@@ -23,7 +23,7 @@ image.tar: Dockerfile docker_entrypoint.sh lnbits-lite/target/aarch64-unknown-li
 		DOCKER_CLI_EXPERIMENTAL=enabled docker buildx build --tag start9/lnbits-lite:$(VERSION) --platform=linux/arm64 -o type=docker,dest=image.tar .
 		
 lnbits-lite/target/aarch64-unknown-linux-musl/release/lnbits-lite: $(LNBITS_LITE_SRC)
-		docker run --rm -it -v ~/.cargo/registry:/root/.cargo/registry -v "$(shell pwd)"/lnbits-lite:/home/rust/src start9/rust-musl-cross:aarch64-musl cargo +beta build --release
+		#docker run --rm -it -v ~/.cargo/registry:/root/.cargo/registry -v "$(shell pwd)"/lnbits-lite:/home/rust/src start9/rust-musl-cross:aarch64-musl cargo +beta build --release
 		docker run --rm -it -v ~/.cargo/registry:/root/.cargo/registry -v "$(shell pwd)"/lnbits-lite:/home/rust/src start9/rust-musl-cross:aarch64-musl musl-strip target/aarch64-unknown-linux-musl/release/lnbits-lite
 
 manifest.yaml: lnbits-lite/Cargo.toml
