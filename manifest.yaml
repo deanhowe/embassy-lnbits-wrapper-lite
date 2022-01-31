@@ -47,7 +47,7 @@ assets:
 main:
   type: docker
   image: main
-  entrypoint: "docker_entrypoint.sh"
+  entrypoint: "/home/lnbits/.local/docker_entrypoint.sh"
   args: []
   mounts:
     lnd: /mnt/lnd
