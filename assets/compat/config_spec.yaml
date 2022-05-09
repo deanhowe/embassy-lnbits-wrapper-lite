@@ -11,13 +11,13 @@
 #   interface: main
 
 tor-address:
-  name: Network Tor Address
-  description: The Tor address for the network interface. 
+  name: Network Tor Address for Instance I
+  description: The Tor address for the network interface of LNBits Instance I. 
   type: pointer
   subtype: package
   package-id: lnbits-lite
   target: tor-address
-  interface: main
+  interface: instance-one
   
 lan-address:
   name: Network LAN Address
@@ -27,6 +27,16 @@ lan-address:
   package-id: lnbits-lite
   target: lan-address
   interface: main
+
+tor-address-instance-0:
+  name: Network Tor Address for Instance I
+  description: The Tor address for the network interface of LNBits Instance I. 
+  type: pointer
+  subtype: package
+  package-id: lnbits-lite
+  target: tor-address
+  interface: instance-one
+
   
 instances:
   type: list
