@@ -1,5 +1,5 @@
 id: lnbits-lite
-version: 0.1.44
+version: 0.1.50
 title: "LNBits LITE LEGEND"
 description:
   short: "LNbits LEGEND LITE v0.1 BETA, free and open-source lightning-network wallet/accounts system"
@@ -9,33 +9,20 @@ release-notes: |
   - Added options to install python plugins
   Initial release.
 license: mit
-#license-info:
-#  license: MIT
-#  url: https://github.com/deanhowe/embassy-lnbits-wrapper-lite/blob/master/LICENSE
 wrapper-repo: https://github.com/deanhowe/embassy-lnbits-wrapper-lite
 upstream-repo: https://github.com/lnbits/lnbits-legend.git
-# URL to the support site / channel for the project. This key can be omitted if none exists, or it can link to the original project repository issues.
 support-site: "https://t.me/joinchat/Fb4OcRo4LrRD6NXfsNdeeQ"
-# URL to the marketing site for the project. This key can be omitted if none exists, or it can link to the original project repository. 
 marketing-site: https://lnbits.moof.uk/
-# Alerts: omitting these will result in using the default alerts in EmbassyOS, except for start, which has no default.
-# Alerts: omitting these will result in using the default alerts in EmbassyOS, except for start, which has no default.
+donation-url: "http://gn762eiwgzelmanmakwjynnp6i3oaucl2uftil27bkxtf5ucuzjmseyd.onion/lnurlp/1"
+marketplace_url: "https://embassy-registry.proxy.moof.uk/lnbits-lite"
+
 alerts:
   install-alert: "LNbits is BETA software - this plugin is ALPHA software USE AT YOUR OWN RISK"
   uninstall-alert: "LNBITS WALLETS DELETED?"
   restore-alert: "Hopefully you can restore service and wallets from an Embassy backup?"
   start-alert: "LNbits is BETA software - this plugin is ALPHA software USE AT YOUR OWN RISK"
 
-# Denotes whether this service has an instructions page. If this is true, it will pack in `instructions.md` in the same
-# directory as this manifest.yaml
-#has-instructions: true
-
-# Denotes the version required and recommended
-# Required means that the package will not install if unsatisfied
-# Recommended means that the package will not be listed by the registry to instances of EmbassyOS that do not satisfy it
 min-os-version: "0.3.0"
-#os-version-required: ">=0.3.0"
-#os-version-recommended: ">=0.3.0"
 
 assets:
   # Default = LICENSE.md
@@ -51,7 +38,7 @@ assets:
 main:
   type: docker
   image: main
-  entrypoint: "/home/lnbits/.local/docker_entrypoint.sh"
+  entrypoint: "/docker_entrypoint.sh"
   args: []
   mounts:
     lnd: /mnt/lnd
@@ -59,22 +46,7 @@ main:
     main: /datadir
   io-format: yaml
 
-health-checks:
-  main:
-    name: Web Interface
-    success-image: The SQLite UI is accessible
-    type: docker
-    image: main
-    entrypoint: "check-web.sh"
-    args: []
-    # When `inject` is true, the health check will use the main image to run the health check. This is faster as there is no need to spin up an additional docker container
-    # When `inject` is false, the health check will use whatever image is specified. This is useful when using a system image with additional utilities to run a health check. If inject=false, then system must equal true
-    inject: true
-    # Optional if false - indicates if an image that is preloaded onto the system will be used
-    system: false
-    # Required - valid values are yaml, toml, json
-    io-format: json
-
+health-checks: {}
 ##config: ~ # Configuration options, none for hello-world, but see below example for format:
 config:
   get:
@@ -216,13 +188,6 @@ volumes:
     path: "/shared"
     readonly: false
 
-alerts:
-  install-alert: "LNbits is BETA software  -  this plugin is ALPHA software USE AT YOUR OWN RISK"
-  uninstall-alert: "LNBITS WALLETS DELETED?"
-  restore-alert: "Hopefully you can restore service and wallets from an Embassy backup?"
-  start-alert: "LNbits is BETA software  -  this plugin is ALPHA software USE AT YOUR OWN RISK"
-
-# for duplicity - backup mount point needs to be something other than `/root` - we default to `/root/data`
 backup:
   create:
     type: docker
@@ -235,8 +200,6 @@ backup:
       - /mnt/backup
       - /root
     mounts:
-      # BACKUP is the default volume that is used for backups.  This is whatever backup drive is mounted to the defice, or a network filesystem.  
-      # The value here donates where the data mount point will be.  Backup drive is mounted to this location, which contains previous backups.
       BACKUP: "/mnt/backup" 
       main: "/root"
   restore:
@@ -253,127 +216,77 @@ backup:
       # See above comments under `backup: -> mounts:`
       BACKUP: "/mnt/backup"
       main: "/root"
-
-###   - id: install-c-lightning
-##    name: Install addtional C-Lightning Python packages
-##    description: This action will install the required C-Lightning Python packages to use LNBits with C-Lightning
-##    allowed-statuses:
-##      - "RUNNING"
-##    command:
-##      - /home/lnbits/.local/lnbits_extra_actions
-##      - install-c-lightning
-##  - id: install-lnd-libraries
-##    name: Install addtional Python packages for LND compatibility
-##    description: This action will install the required RPC/GRP Python packages to use LNBits with LND
-##    allowed-statuses:
-##      - "RUNNING"
-##    command:
-##      - /home/lnbits/.local/lnbits_extra_actions
-##      - install-lnd-libraries
+# screen -S 5000 -X quit
 actions:
-  install-sqlite-web:
-    name: SQLite Web Interface - [Install]
-    description: This action will start the SQLite Web Interface
-    allowed-statuses:
-      - "running"
-    implementation:
-      type: docker
-      image: main
-      entrypoint: /home/lnbits/.local/lnbits_extra_actions
-      args: ["install-sqlite-web"]
-      inject: true
-      io-format: json
-  start-sqlite-web:
-    name: SQLite Web Interface - [Start]
-    description: This action will start the SQLite Web Interface
-    allowed-statuses:
-      - "running"
-    implementation:
-      type: docker
-      image: main
-      entrypoint: /home/lnbits/.local/lnbits_extra_actions
-      args: ["start-sqlite-web"]
-      inject: true
-      io-format: json
-  install-nano:
-    name: Install Nano
-    description: This action will install nano
-    allowed-statuses:
-      - "running"
-    implementation:
-      type: docker
-      image: main
-      entrypoint: /home/lnbits/.local/lnbits_extra_actions
-      args: ["install-nano"]
-      inject: true
-      io-format: json
   start-linbits:
-    name: Instance I - [Start]
-    description: This action will START LNBits
+    name: "Start Instance I"
+    description: "This action will START LNBits on port 5000"
     allowed-statuses:
       - "running"
     implementation:
       type: docker
       image: main
-      entrypoint: /home/lnbits/.local/lnbits_extra_actions
-      args: ["start-lnbits"]
-      inject: true
-      io-format: json
-  stop-linbits:
-    name: Instance I - [Stop]
-    description: This action will STOP LNBits
-    allowed-statuses:
-      - "running"
-    implementation:
-      type: docker
-      image: main
-      entrypoint: /home/lnbits/.local/lnbits_extra_actions
-      args: ["stop-lnbits"]
+      entrypoint: /lnbits/venv/bin/create_lnbits_instance
+      args: ["0"]
       inject: true
       io-format: json
   start-linbits-two:
-    name: Instance II - [Start]
-    description: This action will START LNBits
+    name: "Start Instance II"
+    description: "This action will START LNBits on port 50001"
     allowed-statuses:
       - "running"
     implementation:
       type: docker
       image: main
-      entrypoint: /home/lnbits/.local/lnbits_extra_actions
-      args: ["start-lnbits-two"]
-      inject: true
-      io-format: json
-  stop-linbits-two:
-    name: Instance II - [Stop]
-    description: This action will STOP LNBits
-    allowed-statuses:
-      - "running"
-    implementation:
-      type: docker
-      image: main
-      entrypoint: /home/lnbits/.local/lnbits_extra_actions
-      args: ["stop-lnbits-two"]
+      entrypoint: /lnbits/venv/bin/create_lnbits_instance
+      args: ["1"]
       inject: true
       io-format: json
   start-linbits-three:
-    name: Instance III - [Start]
-    description: This action will START LNBits
+    name: "Start Instance III"
+    description: "This action will START LNBits on port 50002"
     allowed-statuses:
       - "running"
     implementation:
       type: docker
       image: main
-      entrypoint: /home/lnbits/.local/lnbits_extra_actions
-      args: ["start-lnbits-three"]
+      entrypoint: /lnbits/venv/bin/create_lnbits_instance
+      args: ["2"]
+      inject: true
       io-format: json
-  stop-linbits-thre:
-    name: Instance III - [Stop]
-    description: This action will STOP LNBits
+  start-linbits-four:
+    name: "Start Instance IV"
+    description: "This action will START LNBits on port 50003"
     allowed-statuses:
       - "running"
     implementation:
       type: docker
       image: main
-      entrypoint: /home/lnbits/.local/lnbits_extra_actions
-      args: ["stop-lnbits-three"]
+      entrypoint: /lnbits/venv/bin/create_lnbits_instance
+      args: ["3"]
+      inject: true
+      io-format: json
+  start-linbits-five:
+    name: "Start Instance V"
+    description: "This action will START LNBits on port 50004"
+    allowed-statuses:
+      - "running"
+    implementation:
+      type: docker
+      image: main
+      entrypoint: /lnbits/venv/bin/create_lnbits_instance
+      args: ["4"]
+      inject: true
+      io-format: json
+  start-linbits-six:
+    name: "Start Instance VI"
+    description: "This action will START LNBits on port 50005"
+    allowed-statuses:
+      - "running"
+    implementation:
+      type: docker
+      image: main
+      entrypoint: /lnbits/venv/bin/create_lnbits_instance
+      args: ["5"]
+      inject: true
       io-format: json
