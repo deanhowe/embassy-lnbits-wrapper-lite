@@ -1,6 +1,5 @@
-compat: v0
 id: lnbits-lite
-version: 0.1.2
+version: 0.1.44
 title: "LNBits LITE LEGEND"
 description:
   short: "LNbits LEGEND LITE v0.1 BETA, free and open-source lightning-network wallet/accounts system"
@@ -10,18 +9,22 @@ release-notes: |
   - Added options to install python plugins
   Initial release.
 license: mit
-license-info:
-  license: MIT
-  url: https://github.com/deanhowe/embassy-lnbits-wrapper-lite/blob/master/LICENSE
+#license-info:
+#  license: MIT
+#  url: https://github.com/deanhowe/embassy-lnbits-wrapper-lite/blob/master/LICENSE
 wrapper-repo: https://github.com/deanhowe/embassy-lnbits-wrapper-lite
 upstream-repo: https://github.com/lnbits/lnbits-legend.git
-support-page: https://t.me/joinchat/Fb4OcRo4LrRD6NXfsNdeeQ
-#marketing-page: https://lnbits.moof.uk/
+# URL to the support site / channel for the project. This key can be omitted if none exists, or it can link to the original project repository issues.
+support-site: "https://t.me/joinchat/Fb4OcRo4LrRD6NXfsNdeeQ"
+# URL to the marketing site for the project. This key can be omitted if none exists, or it can link to the original project repository. 
+marketing-site: https://lnbits.moof.uk/
 # Alerts: omitting these will result in using the default alerts in EmbassyOS, except for start, which has no default.
-install-alert: "LNbits is BETA software  -  this plugin is ALPHA software USE AT YOUR OWN RISK"
-uninstall-alert: "LNBITS WALLETS DELETED?"
-restore-alert: Hopefully you can restore service and wallets from an Embassy backup?
-start-alert: "LNbits is BETA software  -  this plugin is ALPHA software USE AT YOUR OWN RISK"
+# Alerts: omitting these will result in using the default alerts in EmbassyOS, except for start, which has no default.
+alerts:
+  install-alert: "LNbits is BETA software - this plugin is ALPHA software USE AT YOUR OWN RISK"
+  uninstall-alert: "LNBITS WALLETS DELETED?"
+  restore-alert: "Hopefully you can restore service and wallets from an Embassy backup?"
+  start-alert: "LNbits is BETA software - this plugin is ALPHA software USE AT YOUR OWN RISK"
 
 # Denotes whether this service has an instructions page. If this is true, it will pack in `instructions.md` in the same
 # directory as this manifest.yaml
@@ -31,8 +34,8 @@ start-alert: "LNbits is BETA software  -  this plugin is ALPHA software USE AT Y
 # Required means that the package will not install if unsatisfied
 # Recommended means that the package will not be listed by the registry to instances of EmbassyOS that do not satisfy it
 min-os-version: "0.3.0"
-os-version-required: ">=0.3.0"
-os-version-recommended: ">=0.3.0"
+#os-version-required: ">=0.3.0"
+#os-version-recommended: ">=0.3.0"
 
 assets:
   # Default = LICENSE.md
@@ -43,6 +46,7 @@ assets:
   instructions: docs/instructions.md
   # Default = image.tar
   docker-images: image.tar
+
 # The main action for initializing the service. Currently, the only type of action available is docker.
 main:
   type: docker
@@ -55,73 +59,142 @@ main:
     main: /datadir
   io-format: yaml
 
-health-checks: {}
-config: ~ # Configuration options, none for hello-world, but see below example for format:
+health-checks:
+  main:
+    name: Web Interface
+    success-image: The SQLite UI is accessible
+    type: docker
+    image: main
+    entrypoint: "check-web.sh"
+    args: []
+    # When `inject` is true, the health check will use the main image to run the health check. This is faster as there is no need to spin up an additional docker container
+    # When `inject` is false, the health check will use whatever image is specified. This is useful when using a system image with additional utilities to run a health check. If inject=false, then system must equal true
+    inject: true
+    # Optional if false - indicates if an image that is preloaded onto the system will be used
+    system: false
+    # Required - valid values are yaml, toml, json
+    io-format: json
+
+##config: ~ # Configuration options, none for hello-world, but see below example for format:
+config:
+  get:
+    type: docker
+    image: compat
+    system: true
+    entrypoint: compat
+    args: 
+      - config
+      - get
+      - /datadir
+      - "/mnt/assets/config_spec.yaml"
+    mounts:
+      compat: /mnt/assets
+      main: /datadir
+    io-format: yaml
+  set:
+    type: docker
+    image: compat
+    system: true
+    entrypoint: compat
+    args:
+      - config
+      - set
+      - "lnbits-lite"
+      - /datadir
+      - "/mnt/assets/config_rules.yaml"
+      - "/mnt/assets/dependencies.yaml"
+    mounts:
+      compat: /mnt/assets
+      main: /datadir
+    io-format: yaml
 # Port mappings from tor ports to the container port
 # if lan is standard, it will proxy HTTP traffic from 443 to the internal port
 interfaces:
-  main:
+  sqlite:
+    name: sqlite
+    description: Web interface for ALL LNBits SQLite Databases
+    tor-config:
+      port-mapping:
+        80: "8080"
+    lan-config:
+      443:
+        ssl: true
+        internal: 8080
+    ui: false
+    protocols:
+      - tcp
+      - http
+  instance-one:
     name: Instance I
     description: LNbits Instance I
     tor-config:
       port-mapping:
-        5000: "80"
-    lan-config:
-      5000:
-        ssl: true
-        mapping: 443
+        80: "5000"
     ui: true
     protocols:
       - tcp
       - http
-##  - internal: 5000
-##    tor: 80
-##    lan: standard
-##  - internal: 8080
-##    tor: 3456
-##    lan:
-##      custom:
-##        port: 8080
-##  - internal: 5001
-##    tor: 81
-##    lan:
-##      custom:
-##        port: 81
-##  - internal: 5002
-##    tor: 82
-##    lan:
-##      custom:
-##        port: 82
-##  - internal: 5003
-##    tor: 83
-##    lan:
-##      custom:
-##        port: 83
-##  - internal: 5004
-##    tor: 84
-##    lan:
-##      custom:
-##        port: 84
-##  - internal: 5005
-##    tor: 85
-##    lan:
-##      custom:
-##        port: 85
-#  - internal: 5003
-#    tor: 80
+  instance-two:
+    name: Instance II
+    description: LNbits Instance II
+    tor-config:
+      port-mapping:
+        80: "5001"
+    ui: true
+    protocols:
+      - tcp
+      - http
+  instance-three:
+    name: Instance III
+    description: LNbits Instance III
+    tor-config:
+      port-mapping:
+        80: "5002"
+    ui: true
+    protocols:
+      - tcp
+      - http
+  instance-four:
+    name: Instance IV
+    description: LNbits Instance IV
+    tor-config:
+      port-mapping:
+        80: "5003"
+    ui: true
+    protocols:
+      - tcp
+      - http
+  instance-five:
+    name: Instance V
+    description: LNbits Instance V
+    tor-config:
+      port-mapping:
+        80: "5004"
+    ui: true
+    protocols:
+      - tcp
+      - http
+  instance-six:
+    name: Instance VI
+    description: LNbits Instance VI
+    tor-config:
+      port-mapping:
+        80: "5005"
+    ui: true
+    protocols:
+      - tcp
+      - http
 
 dependencies:
   lnd:
     version: ">=0.11.1 <0.14.0"
     description: "The LND node you wish to use with LNBits LEGEND"
-    critical: false
     requirement:
       type: required
     config: ~
   c-lightning:
     version: ">=0.10.1 <0.11.0"
     description: Used to communicate with the Lightning Network.
-    critical: true
     requirement:
       type: required
     config: ~
@@ -141,24 +214,14 @@ volumes:
     package-id: c-lightning
     volume-id: main
     path: "/shared"
-    readonly: true
-###   - id: install-c-lightning
-##    name: Install addtional C-Lightning Python packages
-##    description: This action will install the required C-Lightning Python packages to use LNBits with C-Lightning
-##    allowed-statuses:
-##      - "RUNNING"
-##    command:
-##      - /home/lnbits/.local/lnbits_extra_actions
-##      - install-c-lightning
-##  - id: install-lnd-libraries
-##    name: Install addtional Python packages for LND compatibility
-##    description: This action will install the required RPC/GRP Python packages to use LNBits with LND
-##    allowed-statuses:
-##      - "RUNNING"
-##    command:
-##      - /home/lnbits/.local/lnbits_extra_actions
-##      - install-lnd-libraries
-alerts: {}
+    readonly: false
+
+alerts:
+  install-alert: "LNbits is BETA software  -  this plugin is ALPHA software USE AT YOUR OWN RISK"
+  uninstall-alert: "LNBITS WALLETS DELETED?"
+  restore-alert: "Hopefully you can restore service and wallets from an Embassy backup?"
+  start-alert: "LNbits is BETA software  -  this plugin is ALPHA software USE AT YOUR OWN RISK"
+
 # for duplicity - backup mount point needs to be something other than `/root` - we default to `/root/data`
 backup:
   create:
@@ -190,128 +253,127 @@ backup:
       # See above comments under `backup: -> mounts:`
       BACKUP: "/mnt/backup"
       main: "/root"
-actions: {}
-##  install-sqlite-web:
-##    name: Install SQLite Web Interface
-##    description: This action will start the SQLite Web Interface
+
+###   - id: install-c-lightning
+##    name: Install addtional C-Lightning Python packages
+##    description: This action will install the required C-Lightning Python packages to use LNBits with C-Lightning
 ##    allowed-statuses:
-##      - "running"
-##    implementation:
-##      type: docker
-##      image: main
-##      entrypoint: /home/lnbits/.local/lnbits_extra_actions
-##      args: ["install-sqlite-web"]
-##      inject: true
-##      io-format: json
-##  start-sqlite-web:
-##    name: Start SQLite Web Interface
-##    description: This action will start the SQLite Web Interface
-##    allowed-statuses:
-##      - "running"
+##      - "RUNNING"
 ##    command:
 ##      - /home/lnbits/.local/lnbits_extra_actions
-##      - start-sqlite-web
-##  install-nano:
-##    name: Install Nano
-##    description: This action will install nano
+##      - install-c-lightning
+##  - id: install-lnd-libraries
+##    name: Install addtional Python packages for LND compatibility
+##    description: This action will install the required RPC/GRP Python packages to use LNBits with LND
 ##    allowed-statuses:
-##      - "running"
+##      - "RUNNING"
 ##    command:
 ##      - /home/lnbits/.local/lnbits_extra_actions
-##      - install-nano
-##  start-linbits:
-##    name: Start LNBits Instance I
-##    description: This action will START LNBits
-##    allowed-statuses:
-##      - "running"
-##    command:
-##      - /home/lnbits/.local/lnbits_extra_actions
-##      - start-lnbits
-##  stop-linbits:
-##    name: Stop LNBits Instance I
-##    description: This action will STOP LNBits
-##    allowed-statuses:
-##      - "running"
-##    command:
-##      - /home/lnbits/.local/lnbits_extra_actions
-##      - stop-lnbits
-##  start-linbits-5001:
-##    name: Start LNBits Instance II
-##    description: This action will START LNBits
-##    allowed-statuses:
-##      - "running"
-##    command:
-##      - /home/lnbits/.local/lnbits_extra_actions
-##      - start-lnbits-5001
-##  stop-linbits-5001:
-##    name: Stop LNBits Instance II
-##    description: This action will STOP LNBits
-##    allowed-statuses:
-##      - "running"
-##    command:
-##      - /home/lnbits/.local/lnbits_extra_actions
-##      - stop-lnbits-5001
-##  start-linbits-5002:
-##    name: Start LNBits Instance III
-##    description: This action will START LNBits
-##    allowed-statuses:
-##      - "running"
-##    command:
-##      - /home/lnbits/.local/lnbits_extra_actions
-##      - start-lnbits-5002
-##  stop-linbits-5002:
-##    name: Stop LNBits Instance III
-##    description: This action will STOP LNBits
-##    allowed-statuses:
-##      - "running"
-##    command:
-##      - /home/lnbits/.local/lnbits_extra_actions
-##      - stop-lnbits-5002
-##  start-linbits-5003:
-##    name: Start LNBits Instance IV
-##    description: This action will START LNBits
-##    allowed-statuses:
-##      - "running"
-##    command:
-##      - /home/lnbits/.local/lnbits_extra_actions
-##      - start-lnbits-5003
-##  stop-linbits-5003:
-##    name: Stop LNBits Instance IV
-##    description: This action will STOP LNBits
-##    allowed-statuses:
-##      - "running"
-##    command:
-##      - /home/lnbits/.local/lnbits_extra_actions
-##      - stop-lnbits-5003
-##  start-linbits-5004:
-##    name: Start LNBits Instance V
-##    description: This action will START LNBits
-##    allowed-statuses:
-##      - "running"
-##    command:
-##      - /home/lnbits/.local/lnbits_extra_actions
-##      - start-lnbits-5004
-##  stop-linbits-5004:
-##    name: Stop LNBits Instance V
-##    description: This action will STOP LNBits
-##    allowed-statuses:
-##      - "running"
-##    command:
-##      - /home/lnbits/.local/lnbits_extra_actions
-##      - stop-lnbits-5004
-##  start-linbits-5005:
-##    name: Start LNBits Instance VI
-##    description: This action will START LNBits
-##    allowed-statuses:
-##      - "running"
-##    command:
-##      - /home/lnbits/.local/lnbits_extra_actions
-##      - start-lnbits-5005
-##  stop-linbits-5005:
-##    name: Stop LNBits Instance VI
-##    description: This action will STOP LNBits
-##    allowed-statuses:
-##      - "running"
-##    command:
-##      - /home/lnbits/.local/lnbits_extra_actions
-##      - stop-lnbits-5005
+##      - install-lnd-libraries
+actions:
+  install-sqlite-web:
+    name: SQLite Web Interface - [Install]
+    description: This action will start the SQLite Web Interface
+    allowed-statuses:
+      - "running"
+    implementation:
+      type: docker
+      image: main
+      entrypoint: /home/lnbits/.local/lnbits_extra_actions
+      args: ["install-sqlite-web"]
+      inject: true
+      io-format: json
+  start-sqlite-web:
+    name: SQLite Web Interface - [Start]
+    description: This action will start the SQLite Web Interface
+    allowed-statuses:
+      - "running"
+    implementation:
+      type: docker
+      image: main
+      entrypoint: /home/lnbits/.local/lnbits_extra_actions
+      args: ["start-sqlite-web"]
+      inject: true
+      io-format: json
+  install-nano:
+    name: Install Nano
+    description: This action will install nano
+    allowed-statuses:
+      - "running"
+    implementation:
+      type: docker
+      image: main
+      entrypoint: /home/lnbits/.local/lnbits_extra_actions
+      args: ["install-nano"]
+      inject: true
+      io-format: json
+  start-linbits:
+    name: Instance I - [Start]
+    description: This action will START LNBits
+    allowed-statuses:
+      - "running"
+    implementation:
+      type: docker
+      image: main
+      entrypoint: /home/lnbits/.local/lnbits_extra_actions
+      args: ["start-lnbits"]
+      inject: true
+      io-format: json
+  stop-linbits:
+    name: Instance I - [Stop]
+    description: This action will STOP LNBits
+    allowed-statuses:
+      - "running"
+    implementation:
+      type: docker
+      image: main
+      entrypoint: /home/lnbits/.local/lnbits_extra_actions
+      args: ["stop-lnbits"]
+      inject: true
+      io-format: json
+  start-linbits-two:
+    name: Instance II - [Start]
+    description: This action will START LNBits
+    allowed-statuses:
+      - "running"
+    implementation:
+      type: docker
+      image: main
+      entrypoint: /home/lnbits/.local/lnbits_extra_actions
+      args: ["start-lnbits-two"]
+      inject: true
+      io-format: json
+  stop-linbits-two:
+    name: Instance II - [Stop]
+    description: This action will STOP LNBits
+    allowed-statuses:
+      - "running"
+    implementation:
+      type: docker
+      image: main
+      entrypoint: /home/lnbits/.local/lnbits_extra_actions
+      args: ["stop-lnbits-two"]
+      inject: true
+      io-format: json
+  start-linbits-three:
+    name: Instance III - [Start]
+    description: This action will START LNBits
+    allowed-statuses:
+      - "running"
+    implementation:
+      type: docker
+      image: main
+      entrypoint: /home/lnbits/.local/lnbits_extra_actions
+      args: ["start-lnbits-three"]
+      io-format: json
+  stop-linbits-thre:
+    name: Instance III - [Stop]
+    description: This action will STOP LNBits
+    allowed-statuses:
+      - "running"
+    implementation:
+      type: docker
+      image: main
+      entrypoint: /home/lnbits/.local/lnbits_extra_actions
+      args: ["stop-lnbits-three"]
+      io-format: json

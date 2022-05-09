@@ -12,6 +12,7 @@ export PATH=/home/lnbits/.local/bin/:$PATH
 #       echo "WHAT"
 #fi
 
+
 if [ "$1" = "install-c-lightning" ]; then
 	if pip3 show -qqq pylightning 2>/dev/null; then
 		echo "pylightning alreday installed"
@@ -56,52 +57,53 @@ elif [ "$1" = "start-lnbits" ]; then
 	exec su -s /bin/sh -c '/home/lnbits/.local/lnbits_startup_script.sh' lnbits
 	echo "LNBits Started"
 	exit 0
-elif [ "$1" = "start-lnbits-5001" ]; then
+elif [ "$1" = "start-lnbits-two" ]; then
+	/home/lnbits/.local/echo_lnbits_envs
 	echo "Starting LNBits II"
 	exec su -s /bin/sh -c '/home/lnbits/.local/lnbits_instance_startup.sh 1' lnbits
 	echo "LNBits II Started"
 	exit 0
-elif [ "$1" = "stop-lnbits-5001" ]; then
+elif [ "$1" = "stop-lnbits-two" ]; then
 	echo "Stopping LNBits II"
 	kill $(cat /tmp/hypercorn-5001.pid)
 	echo "LNBits II Stopped"
 	exit 0
-elif [ "$1" = "start-lnbits-5002" ]; then
+elif [ "$1" = "start-lnbits-three" ]; then
 	echo "Starting LNBits III"
 	exec su -s /bin/sh -c '/home/lnbits/.local/lnbits_instance_startup.sh 2' lnbits
 	echo "LNBits III Started"
 	exit 0
-elif [ "$1" = "stop-lnbits-5002" ]; then
+elif [ "$1" = "stop-lnbits-three" ]; then
 	echo "Stopping LNBits III"
 	kill $(cat /tmp/hypercorn-5002.pid)
 	echo "LNBits III Stopped"
 	exit 0
-elif [ "$1" = "start-lnbits-5003" ]; then
+elif [ "$1" = "start-lnbits-four" ]; then
 	echo "Starting LNBits IV"
 	exec su -s /bin/sh -c '/home/lnbits/.local/lnbits_instance_startup.sh 3' lnbits
 	echo "LNBits IV Started"
 	exit 0
-elif [ "$1" = "stop-lnbits-5003" ]; then
+elif [ "$1" = "stop-lnbits-four" ]; then
 	echo "Stopping LNBits IV"
 	kill $(cat /tmp/hypercorn-5003.pid)
 	echo "LNBits IV Stopped"
 	exit 0
-elif [ "$1" = "start-lnbits-5004" ]; then
+elif [ "$1" = "start-lnbits-five" ]; then
 	echo "Starting LNBits V"
 	exec su -s /bin/sh -c '/home/lnbits/.local/lnbits_instance_startup.sh 4' lnbits
 	echo "LNBits V Started"
 	exit 0
-elif [ "$1" = "stop-lnbits-5004" ]; then
+elif [ "$1" = "stop-lnbits-five" ]; then
 	echo "Stopping LNBits V"
 	kill $(cat /tmp/hypercorn-5004.pid)
 	echo "LNBits V Stopped"
 	exit 0
-elif [ "$1" = "start-lnbits-5005" ]; then
+elif [ "$1" = "start-lnbits-six" ]; then
 	echo "Starting LNBits VI"
 	exec su -s /bin/sh -c '/home/lnbits/.local/lnbits_instance_startup.sh 5' lnbits
 	echo "LNBits II Started"
 	exit 0
-elif [ "$1" = "stop-lnbits-5005" ]; then
+elif [ "$1" = "stop-lnbits-six" ]; then
 	echo "Stopping LNBits VI"
 	kill $(cat /tmp/hypercorn-5005.pid)
 	echo "LNBits VI Stopped"

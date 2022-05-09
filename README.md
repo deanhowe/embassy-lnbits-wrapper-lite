@@ -1,10 +1,11 @@
 # Instructions for LNBits LEGEND LITE…
 
+Build the service and copy the compiled `lnbits-lite.s9pk` file to your Embassy
+
 SSH into your embassy and run the following commands
 
-	sudo appmgr install lnbitslegend-lite.s9pk
-	sudo docker exec -i -t lnbitslegend-lite /bin/sh
-	
+	sudo embassy-cli package install lnbits-lite.s9pk 
+	sudo docker exec -i -t lnbits-lite /bin/sh
 
 Install C-Lightning…
 

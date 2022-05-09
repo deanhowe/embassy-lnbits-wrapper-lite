@@ -1,4 +1,4 @@
-FROM arm64v8/alpine:3.12 as builder
+FROM arm64v8/alpine:3.14 as builder
 
 #ENV FLASK_APP=app.py
 #ENV FLASK_RUN_HOST=0.0.0.0
@@ -55,6 +55,7 @@ RUN apk update && apk add libstdc++
 
 # Add the ENTRYPOINT 
 COPY --chown=lnbits:lnbits ./docker_entrypoint.sh /home/lnbits/.local/docker_entrypoint.sh
+COPY --chown=lnbits:lnbits ./check_web.sh /check_web.sh
 RUN chmod a+x /home/lnbits/.local/docker_entrypoint.sh
 
 # Add the LNBits STARTUP script for the ENTRYPOINT 
@@ -86,7 +87,7 @@ WORKDIR /home/lnbits/app
 
 EXPOSE 5005 5000 5001 5002 5003 5004 8080
 
-#COPY --chown=lnbits:lnbits ./lnbits ./lnbits
+COPY --chown=lnbits:lnbits ./lnbits-legend/lnbits ./lnbits/lnbits-legend
 #COPY --chown=lnbits:lnbits ./.env.embassy ./lnbits/
 
 COPY --chown=lnbits:lnbits ./scripts/lnbits_extra_actions.sh /home/lnbits/.local/lnbits_extra_actions
@@ -97,6 +98,24 @@ RUN chmod a+x /home/lnbits/.local/set_lnbits_envs
 
 COPY --chown=lnbits:lnbits ./scripts/echo_lnbits_envs.sh /home/lnbits/.local/echo_lnbits_envs
 RUN chmod a+x /home/lnbits/.local/echo_lnbits_envs
+
+COPY --chown=lnbits:lnbits ./scripts/echo_lnbits_envs.sh /home/lnbits/.local/echo_new_lnbits_envs
+RUN chmod a+x /home/lnbits/.local/echo_new_lnbits_envs
+
+COPY --chown=lnbits:lnbits 
+
+
+#cp -pr /datadir/lnbits/python_local/bin/protoc-gen-purerpc /home/lnbits/.local/bin/
+#cp -pr /datadir/lnbits/python_local/lib/python3.9/site-packages/aiogrpc* /home/lnbits/.local/lib/python3.9/site-packages/
+#cp -pr /datadir/lnbits/python_local/lib/python3.9/site-packages/anyio* /home/lnbits/.local/lib/python3.9/site-packages/
+#cp -pr /datadir/lnbits/python_local/lib/python3.9/site-packages/google* /home/lnbits/.local/lib/python3.9/site-packages/
+#cp -pr /datadir/lnbits/python_local/lib/python3.9/site-packages/grpc* /home/lnbits/.local/lib/python3.9/site-packages/
+#cp -pr /datadir/lnbits/python_local/lib/python3.9/site-packages/purerpc* /home/lnbits/.local/lib/python3.9/site-packages/
+#cp -pr /datadir/lnbits/python_local/lib/python3.9/site-packages/h2* /home/lnbits/.local/lib/python3.9/site-packages/
+#cp -pr /datadir/lnbits/python_local/lib/python3.9/site-packages/hyperframe* /home/lnbits/.local/lib/python3.9/site-packages/
+#cp -pr /datadir/lnbits/python_local/lib/python3.9/site-packages/lndgrpc* /home/lnbits/.local/lib/python3.9/site-packages/
+#cp -pr /datadir/lnbits/python_local/lib/python3.9/site-packages/protobuf* /home/lnbits/.local/lib/python3.9/site-packages/
+
 
 
 WORKDIR /home/lnbits/app/lnbits/lnbits-legend
