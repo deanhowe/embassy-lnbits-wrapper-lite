@@ -12,4 +12,6 @@ touch /var/log/lnbits.log
 
 /lnbits/venv/bin/create_lnbits_envs
 
+/lnbits/venv/bin/create_lnbits_instance 0
+
 exec tail -f /var/log/lnbits.log

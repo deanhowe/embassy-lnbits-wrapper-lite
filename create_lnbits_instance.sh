@@ -53,7 +53,7 @@ screen -dmS 500$1 bash -c "cd /home/lnbits/app/500$1; /lnbits/venv/bin/uvicorn l
 
 action_result="    {
     \"version\": \"0\",
-    \"message\": \"Please check the **logs** for more details. \\n But it all looks good sa far 🚀 🌕\",
+    \"message\": \"Please check the logs for more details. \\\n But it all looks good sa far 🚀 🌕\",
     \"value\": null,
     \"copyable\": false,
     \"qr\": false

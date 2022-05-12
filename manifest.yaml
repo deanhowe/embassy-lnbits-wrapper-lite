@@ -1,5 +1,5 @@
 id: lnbits-lite
-version: 0.1.50
+version: 0.1.52
 title: "LNBits LITE LEGEND"
 description:
   short: "LNbits LEGEND LITE v0.1 BETA, free and open-source lightning-network wallet/accounts system"
@@ -9,20 +9,13 @@ release-notes: |
   - Added options to install python plugins
   Initial release.
 license: mit
+
 wrapper-repo: https://github.com/deanhowe/embassy-lnbits-wrapper-lite
 upstream-repo: https://github.com/lnbits/lnbits-legend.git
+
 support-site: "https://t.me/joinchat/Fb4OcRo4LrRD6NXfsNdeeQ"
-marketing-site: https://lnbits.moof.uk/
-donation-url: "http://gn762eiwgzelmanmakwjynnp6i3oaucl2uftil27bkxtf5ucuzjmseyd.onion/lnurlp/1"
-marketplace_url: "https://embassy-registry.proxy.moof.uk/lnbits-lite"
-
-alerts:
-  install-alert: "LNbits is BETA software - this plugin is ALPHA software USE AT YOUR OWN RISK"
-  uninstall-alert: "LNBITS WALLETS DELETED?"
-  restore-alert: "Hopefully you can restore service and wallets from an Embassy backup?"
-  start-alert: "LNbits is BETA software - this plugin is ALPHA software USE AT YOUR OWN RISK"
-
-min-os-version: "0.3.0"
+marketing-site: "https://lnbits.moof.uk/"
+donation-url: "https://donations.moof.uk/lnurlp/1"
 
 assets:
   # Default = LICENSE.md
@@ -159,17 +152,20 @@ interfaces:
 
 dependencies:
   lnd:
-    version: ">=0.11.1 <0.14.0"
-    description: "The LND node you wish to use with LNBits LEGEND"
+    version: ">=0.13.3.1 <0.14.0"
     requirement:
-      type: required
+      type: "opt-in"
+      how: Optionally use LND for internal lightning network node implementation.
+    description: Used to communicate with the Lightning Network.
     config: ~
   c-lightning:
-    version: ">=0.10.1 <0.11.0"
-    description: Used to communicate with the Lightning Network.
+    version: ">=0.10.0.1 <0.11.0"
     requirement:
-      type: required
+      type: "opt-in"
+      how: Optionally use c-lightning for internal lightning network node implementation.
+    description: Used to communicate with the Lightning Network.
     config: ~
+
 volumes:
   main:
     type: data

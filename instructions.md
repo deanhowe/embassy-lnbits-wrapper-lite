@@ -1,63 +1,6 @@
 # Instructions for LNBits LEGEND LITE…
 
-SSH into your embassy and run the following commands
-
-	sudo appmgr install lnbitslegend-lite.s9pk
-	sudo docker exec -i -t lnbitslegend-lite /bin/sh
-	
-
-Install C-Lightning…
-
-	sudo su lnbits -s /bin/sh
-	pip3 install pylightning
-	exit
-
-
-	nano /home/lnbits/.local/lnbits_startup_script.sh
-
-Scroll to the bottom of the script uncomment the lines 
-
-```
-#quart assets
-#quart migrate
-```
-
-Save the changes and then test your changes…
-
-	/home/lnbits/.local/docker_entrypoint.sh
-	
-
-```
-#exec hypercorn -k trio --bind 0.0.0.0:5005 'lnbits.app:create_app()'
-```
-
-And comment out the `exec tail -f /dev/null` that is currently keeping the container running.
-
-#exec tail -f /dev/null
-
-
-Test your changes…
-
-	/home/lnbits/.local/docker_entrypoint.sh
-	
-Logout of the docker instance and restart the service.
-
-	sudo appmgr restart lnbitslegend-lite.s9pk
-
-You'll see something like this…
-
-```
-Host IP - 172.18.0.1
-Currently running in Docker as root
-
-...
-
-lnbits.app:create_app()
-  ✔️ CLightningWallet seems to be connected and with a balance of XXXXXXXXXx msat.
-[20XX-XX-XX 01:33:70 +0000] [42] [INFO] Running on http://0.0.0.0:5005 (CTRL + C to quit)
-```	
-
-Instructions go here.
+Build the service and copy the compiled `lnbits-lite.s9pk` file to your Embassy
 
 # LNBits [LEGEND] on Embassy OS
 
@@ -84,3 +27,89 @@ LNbits can run on top of any lightning-network funding source, currently there i
 LNbits has an incredible community of users and developers, exchanging ideas, helping each other, and extending the free and open-source software
 
 Join the telegram group [t.me/lnbits](https://t.me/lnbits)
+
+# Wrapper for lnbits LITE
+
+`lnbitslegend-wrapper` is a simple, minimal project to serve as a template for creating an app for the Embassy.
+
+
+
+## Dependencies
+
+- [docker](https://docs.docker.com/get-docker)
+- [docker-buildx](https://docs.docker.com/buildx/working-with-buildx/)
+- [yq](https://mikefarah.gitbook.io/yq)
+- [toml](https://crates.io/crates/toml-cli)
+- [appmgr](https://github.com/Start9Labs/embassy-os/tree/master/appmgr)
+- [make](https://www.gnu.org/software/make/)
+
+## Build enviroment
+Prepare your EmbassyOS build enviroment. In this example we are using Ubuntu 20.04.
+
+1. Install docker
+```
+curl -fsSL https://get.docker.com -o- | bash
+sudo usermod -aG docker "$USER"
+exec sudo su -l $USER
+```
+2. Set buildx as the default builder
+```
+docker buildx install
+docker buildx create --use
+```
+3. Enable cross-arch emulated builds in docker
+```
+docker run --privileged --rm linuxkit/binfmt:v0.8
+```
+4. Install yq
+```
+sudo snap install yq
+```
+5. Install essentials build packages
+```
+sudo apt-get install -y build-essential openssl libssl-dev libc6-dev clang libclang-dev ca-certificates
+```
+6. Install Rust
+```
+curl https://sh.rustup.rs -sSf | sh
+# Choose nr 1 (default install)
+source $HOME/.cargo/env
+```
+7. Install toml
+```
+cargo install toml-cli
+```
+8. Build and install appmgr
+```
+cd ~/ && git clone https://github.com/Start9Labs/embassy-os.git
+cd embassy-os/appmgr/
+cargo install --path=. --features=portable --no-default-features && cd ~/
+```
+Now you are ready to build your first EmbassyOS service
+
+## Cloning
+
+Clone the project locally. Note the submodule link to the original project(s). 
+
+```
+git clone https://github.com/Start9Labs/lnbitslegend-wrapper.git
+cd lnbits-wrapper
+```
+
+## Building
+
+To build the project, run the following commands:
+
+```
+make
+```
+
+## Installing (on Embassy)
+
+SSH into an Embassy device.
+`scp` the `.s9pk` to any directory from your local machine.
+Run the following command to determine successful install:
+
+```
+sudo appmgr install lnbitslegend.s9pk
+```
